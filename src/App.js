@@ -5,10 +5,13 @@ import Viewer from './Viewer';
 // import Height from './height';
 // import FiberViewer from './fiberViewer';
 import ZusViewer from './zustandViewer';
+import ModelViewer from './ModelViewer';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import FormContainer from './form';
 import styled from 'styled-components';
+import { Controls, useControl } from 'react-three-gui';
+// import { ControlsProvider } from 'react-three-gui/dist/components/controls-provider';
 // import WidthControls from './zusWidth';
 // import HeightControls from './zusHeight';
 const initialState = {
@@ -109,7 +112,9 @@ class App extends React.Component {
 		return (
 			<Provider store={this.store}>
 				<Wrapper className="App">
-					<ZusViewer />
+					{/* <ZusViewer /> */}
+					<ModelViewer />
+
 					{/* <div
 						style={{
 							display: 'flex',
@@ -122,10 +127,10 @@ class App extends React.Component {
 						<h3 style={{ margin: '1rem' }}>
 							built with normal three.js and redux with class
 							components
-						</h3>
-						{/* <Viewer /> */}
-						<FormContainer />
-					</div> */}
+						</h3> */}
+					{/* <Viewer /> */}
+					{/* <FormContainer /> */}
+					{/* </div> */}
 				</Wrapper>
 			</Provider>
 		);

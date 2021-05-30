@@ -9,8 +9,10 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { useStore } from './zusStore';
 import { Controls, useControl } from 'react-three-gui';
 
-export default function Model(props) {
-	const RotationX = useControl('Rotation X', { type: 'number' });
+export default function DrawerModel(props) {
+	const rotationX = useControl('Rotation X', { type: 'number' });
+	const posX = useControl('Pos X', { type: 'number' });
+	const scaleX = useControl('Scale X', { type: 'number' });
 	const group = useRef();
 	const { position } = props;
 	const [clicked, setClicked] = useState(false);
@@ -26,7 +28,9 @@ export default function Model(props) {
 			position={position}
 			visible={!clicked}
 			onClick={() => setClicked(true)}
-			rotation-x={rotationX}
+			// rotation-x={rotationX}
+			// position-x={posX * 100}
+			// scale-x={scaleX}
 		>
 			<mesh
 				material={materials['191,191,191']}
@@ -38,6 +42,8 @@ export default function Model(props) {
 			<mesh
 				material={materials['191,191,191']}
 				geometry={nodes.Solid2.geometry}
+				scale-x={scaleX}
+				position-x={posX * 1000}
 			/>
 			<mesh
 				material={materials['191,191,191']}

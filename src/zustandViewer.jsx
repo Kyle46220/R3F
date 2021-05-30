@@ -8,9 +8,10 @@ import { Canvas, useFrame, useThree, extend } from 'react-three-fiber';
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Model from './DrawerGLTFJSX';
-import { Controls, useControl } from 'react-three-gui';
+import { Controls, useControl, withControls } from 'react-three-gui';
 
 extend({ OrbitControls });
+const MyCanvas = withControls(Canvas);
 
 const Wrapper = styled.section`
 	height: 100%;
@@ -169,6 +170,7 @@ const Build = ({ ...props }) => {
 						<Model
 							key={drawer.id}
 							position={drawer.pos}
+							scale-x={1}
 							onClick={handleDrawerClick(drawer.id)}
 						/>
 					);
@@ -201,18 +203,20 @@ export default () => {
 				Built with React-Three-Fiber and Zustand with functional
 				components and hooks.
 			</h1>
+			<Controls.Provider>
+				<MyCanvas camera={{ position: [700, 1000, 2500], far: 11000 }}>
+					<ambientLight />
+					<pointLight position={[10, 10, 10]} />
+					<Suspense fallback={null}>
+						<Build position={[0, 0, 0]}></Build>
+						{/* <FillDrawers /> */}
+						<Model />
+					</Suspense>
 
-			<Canvas camera={{ position: [700, 1000, 2500], far: 11000 }}>
-				<ambientLight />
-				<pointLight position={[10, 10, 10]} />
-				<Suspense fallback={null}>
-					<Build position={[0, 0, 0]}></Build>
-					{/* <FillDrawers /> */}
-					<Model />
-				</Suspense>
-
-				<ControlOrbit />
-			</Canvas>
+					<ControlOrbit />
+				</MyCanvas>
+				<Controls />
+			</Controls.Provider>
 			<div style={{ display: 'flex' }}>
 				<HeightControls />
 				<WidthControls />
