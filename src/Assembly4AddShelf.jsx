@@ -7,45 +7,11 @@ import React, { useRef, useState } from 'react';
 import { useLoader } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 // import { Controls, useControl } from 'react-three-gui';
-import { useSnapshot, proxy } from 'valtio';
-import { useStore } from './zusStore';
+// import { useSnapshot, proxy } from 'valtio';
+// import { useStore } from './zusStore';
 
-const state = proxy({
-	current: null,
-	items: {
-		Solid6: false,
-		Solid11: false,
-		Solid7: false,
-		Solid23: false,
-		Solid53: false,
-		Solid10: false,
-		Solid43: false,
-		Solid9: false,
-		Solid33: false,
-		Solid8: false,
-	},
-});
-// const handleClick = () => {
-// 	const box = getSize(e.object.geometry.boundingBox);
-// };
-
-// const handlePointerOver = (e, nodes) => {
-// 	const array = Object.entries(nodes);
-// 	const result = array.filter((node) => node[1].name == e.object.name);
-// 	const name = result[0][0];
-// 	return (state.items.name = true);
-// };
-
-// const handlePointerOut = (e) => {
-// 	const array = Object.entries(nodes);
-// 	const result = array.filter((node) => node[1].name == e.object.name);
-// 	const name = result[0][0];
-// 	return (state.items.name = true);
-// };
-
-export default function Model(props) {
-	// const state = useStore();
-	const snap = useSnapshot(state);
+export default function AddShelfModel(props) {
+	const group = useRef();
 	const { nodes, materials } = useLoader(GLTFLoader, '/Assembly4.gltf');
 	const handlePointerOver = (e) => {
 		const array = Object.entries(nodes);
@@ -63,38 +29,25 @@ export default function Model(props) {
 		return (state.items[name] = false);
 	};
 
-	// const rotationX = useControl('Rotation X', { type: 'number' });
-	// const posX = useControl('Pos X', { type: 'number' });
-	// const scaleX = useControl('Scale X', { type: 'number' });
-	// const scaleY = useControl('Scale Y', { type: 'number' });
-	const group = useRef();
-
-	const [hover, setHover] = useState(false);
-	const [click, setClick] = useState(false);
-
+	console.log(nodes);
 	return (
 		<group
 			ref={group}
 			{...props}
 			dispose={null}
 			rotation-x={1.5}
-			// position-x={posX * 500}
-			// 	scale-x={1}
-			// 	scale-y={1}
-			//   scale-z={1}
-			// scale={(1, 1, 1)}
+			position-y={300}
+			position-z={-50}
 		>
 			<mesh
-				name={nodes.Solid1.name}
 				material={nodes.Solid1.material}
 				geometry={nodes.Solid1.geometry}
 			></mesh>
-
-			<mesh
+			{/* <mesh
 				material={nodes.Solid2.material}
 				geometry={nodes.Solid2.geometry}
-			></mesh>
-			<mesh
+			></mesh> */}
+			{/* <mesh
 				material={nodes.Solid3.material}
 				geometry={nodes.Solid3.geometry}
 			></mesh>
@@ -105,36 +58,26 @@ export default function Model(props) {
 			<mesh
 				material={nodes.Solid5.material}
 				geometry={nodes.Solid5.geometry}
-			></mesh>
+			></mesh> */}
 			<mesh
-				name={nodes.Solid11_1.name}
-				material={nodes.Solid11_1.material}
-				geometry={nodes.Solid11_1.geometry}
+				material={nodes.Solid11.material}
+				geometry={nodes.Solid11.geometry}
 				// onPointerDown={(e) => handlePointerOver(state, e)}
-				onPointerOver={(e) => handlePointerOver(e)}
-				onPointerOut={(e) => handlePointerOut(e)}
-				// onPointerOver={(e) => (
-				// 	e.stopPropagation(), set(e.object.material.name)
-				// )}
-				// onPointerOut={(e) => e.intersections.length === 0 && set(null)}
-				// onPointerMissed={() => (state.current = null)}
-				// onPointerDown={(e) => (
-				// 	e.stopPropagation(),
-				// 	(state.current = e.object.material.name)
-				// )}
+				// onPointerOver={() => (state.items.Solid11 = true)}
+				// onPointerOut={() => (state.items.Solid11 = false)}
 			>
 				<meshStandardMaterial
 					attach="material"
-					color={hover ? 'pink' : 'blue'}
+					// color={hover ? 'pink' : 'blue'}
 					transparent={true}
-					opacity={state.items.Solid11_1 ? 0.5 : 0}
+					// opacity={state.items.Solid11 ? 0.5 : 0}
 				/>
 			</mesh>
 			<mesh
 				material={nodes.Solid12.material}
 				geometry={nodes.Solid12.geometry}
 			></mesh>
-			<mesh
+			{/* <mesh
 				material={nodes.Solid13.material}
 				geometry={nodes.Solid13.geometry}
 			></mesh>
@@ -145,20 +88,21 @@ export default function Model(props) {
 			<mesh
 				material={nodes.Solid31.material}
 				geometry={nodes.Solid31.geometry}
-			></mesh>
+			></mesh> */}
+
 			<mesh
 				material={nodes.Solid41.material}
 				geometry={nodes.Solid41.geometry}
 			></mesh>
-			<mesh
+			{/* <mesh
 				material={nodes.Solid51.material}
 				geometry={nodes.Solid51.geometry}
-			></mesh>
-			<mesh
+			></mesh> */}
+			{/* <mesh
 				material={nodes.Solid14.material}
 				geometry={nodes.Solid14.geometry}
-			></mesh>
-			<mesh
+			></mesh> */}
+			{/* <mesh
 				material={nodes.Solid15.material}
 				geometry={nodes.Solid15.geometry}
 			></mesh>
@@ -173,8 +117,8 @@ export default function Model(props) {
 			<mesh
 				material={nodes.Solid18.material}
 				geometry={nodes.Solid18.geometry}
-			></mesh>
-			<mesh
+			></mesh> */}
+			{/* <mesh
 				material={nodes.Solid22.material}
 				geometry={nodes.Solid22.geometry}
 			></mesh>
@@ -189,8 +133,8 @@ export default function Model(props) {
 			<mesh
 				material={nodes.Solid52.material}
 				geometry={nodes.Solid52.geometry}
-			/>
-			<mesh
+			/> */}
+			{/* <mesh
 				material={nodes.Solid19.material}
 				geometry={nodes.Solid19.geometry}
 			></mesh>
@@ -201,17 +145,16 @@ export default function Model(props) {
 			<mesh
 				material={nodes.Solid111.material}
 				geometry={nodes.Solid111.geometry}
-			></mesh>
+			></mesh> */}
 			<mesh
 				material={nodes.Solid112.material}
 				geometry={nodes.Solid112.geometry}
 			/>
-			<mesh
+			{/* <mesh
 				material={nodes.Solid113.material}
 				geometry={nodes.Solid113.geometry}
-			/>
-			<mesh
-				name={nodes.Solid23.name}
+			/> */}
+			{/* <mesh
 				material={nodes.Solid23.material}
 				geometry={nodes.Solid23.geometry}
 				onPointerOver={() => (state.items.Solid23 = true)}
@@ -223,13 +166,12 @@ export default function Model(props) {
 					transparent={true}
 					opacity={state.items.Solid23 ? 1 : 0}
 				/>
-			</mesh>
-			<mesh
-				name={nodes.Solid33.name}
+			</mesh> */}
+			{/* <mesh
 				material={nodes.Solid33.material}
 				geometry={nodes.Solid33.geometry}
-				onPointerOver={(e) => handlePointerOver(e)}
-				onPointerOut={(e) => handlePointerOut(e)}
+				onPointerOver={() => (state.items.Solid33 = true)}
+				onPointerOut={() => (state.items.Solid33 = false)}
 			>
 				<meshStandardMaterial
 					attach="material"
@@ -239,11 +181,10 @@ export default function Model(props) {
 				/>
 			</mesh>
 			<mesh
-				name={nodes.Solid43.name}
 				material={nodes.Solid43.material}
 				geometry={nodes.Solid43.geometry}
-				onPointerOver={(e) => handlePointerOver(e)}
-				onPointerOut={(e) => handlePointerOut(e)}
+				onPointerOver={() => (state.items.Solid43 = true)}
+				onPointerOut={() => (state.items.Solid43 = false)}
 			>
 				<meshStandardMaterial
 					attach="material"
@@ -251,13 +192,12 @@ export default function Model(props) {
 					transparent={true}
 					opacity={state.items.Solid43 ? 0.5 : 0}
 				/>
-			</mesh>
-			<mesh
-				name={nodes.Solid53.name}
+			</mesh> */}
+			{/* <mesh
 				material={nodes.Solid53.material}
 				geometry={nodes.Solid53.geometry}
-				onPointerOver={(e) => handlePointerOver(e)}
-				onPointerOut={(e) => handlePointerOut(e)}
+				onPointerOver={() => (state.items.Solid53 = true)}
+				onPointerOut={() => (state.items.Solid53 = false)}
 			>
 				<meshStandardMaterial
 					attach="material"
@@ -265,27 +205,25 @@ export default function Model(props) {
 					transparent={true}
 					opacity={state.items.Solid53 ? 0.5 : 0}
 				/>
-			</mesh>
+			</mesh> */}
 			<mesh
-				name={nodes.Solid6.name}
 				material={nodes.Solid6.material}
 				geometry={nodes.Solid6.geometry}
-				onPointerOver={(e) => handlePointerOver(e)}
-				onPointerOut={(e) => handlePointerOut(e)}
+				// onPointerOver={() => (state.items.Solid6 = true)}
+				// onPointerOut={() => (state.items.Solid6 = false)}
 			>
 				<meshStandardMaterial
 					attach="material"
-					color={hover ? 'pink' : 'blue'}
+					// color={hover ? 'pink' : 'blue'}
 					transparent={true}
-					opacity={state.items.Solid6 ? 0.5 : 0}
+					// opacity={state.items.Solid6 ? 0.5 : 0}
 				/>
 			</mesh>
-			<mesh
-				name={nodes.Solid7.name}
+			{/* <mesh
 				material={nodes.Solid7.material}
 				geometry={nodes.Solid7.geometry}
-				onPointerOver={(e) => handlePointerOver(e)}
-				onPointerOut={(e) => handlePointerOut(e)}
+				onPointerOver={() => (state.items.Solid7 = true)}
+				onPointerOut={() => (state.items.Solid7 = false)}
 			>
 				<meshStandardMaterial
 					attach="material"
@@ -295,11 +233,10 @@ export default function Model(props) {
 				/>
 			</mesh>
 			<mesh
-				name={nodes.Solid8.name}
 				material={nodes.Solid8.material}
 				geometry={nodes.Solid8.geometry}
-				onPointerOver={(e) => handlePointerOver(e)}
-				onPointerOut={(e) => handlePointerOut(e)}
+				onPointerOver={() => (state.items.Solid8 = true)}
+				onPointerOut={() => (state.items.Solid8 = false)}
 			>
 				<meshStandardMaterial
 					attach="material"
@@ -309,25 +246,21 @@ export default function Model(props) {
 				/>
 			</mesh>
 			<mesh
-				name={nodes.Solid9.name}
 				material={nodes.Solid9.material}
 				geometry={nodes.Solid9.geometry}
-				onPointerOver={(e) => handlePointerOver(e)}
-				onPointerOut={(e) => handlePointerOut(e)}
+				onPointerOver={() => (state.items.Solid9 = true)}
+				onPointerOut={() => (state.items.Solid9 = false)}
 			>
 				<meshStandardMaterial
 					attach="material"
 					color={hover ? 'pink' : 'blue'}
-					transparent={true}
-					opacity={state.items.Solid9 ? 0.5 : 0}
 				/>
-			</mesh>
-			<mesh
-				name={nodes.Solid10.name}
+			</mesh> */}
+			{/* <mesh
 				material={nodes.Solid10.material}
 				geometry={nodes.Solid10.geometry}
-				onPointerOver={(e) => handlePointerOver(e)}
-				onPointerOut={(e) => handlePointerOut(e)}
+				onPointerOver={() => (state.items.Solid10 = true)}
+				onPointerOut={() => (state.items.Solid10 = false)}
 			>
 				<meshStandardMaterial
 					attach="material"
@@ -335,18 +268,11 @@ export default function Model(props) {
 					transparent={true}
 					opacity={state.items.Solid10 ? 1 : 0}
 				/>
-			</mesh>
-			<mesh
+			</mesh> */}
+			{/* <mesh
 				material={nodes.Solid11.material}
 				geometry={nodes.Solid11.geometry}
-			>
-				<meshStandardMaterial
-					attach="material"
-					color={hover ? 'pink' : 'blue'}
-					// transparent={true}
-					// opacity={state.items.Solid10 ? 1 : 0}
-				/>
-			</mesh>
+			></mesh> */}
 		</group>
 	);
 }

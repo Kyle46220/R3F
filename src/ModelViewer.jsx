@@ -4,11 +4,13 @@ import styled from 'styled-components';
 
 import { useStore, WidthControls, HeightControls, api } from './zusStore';
 
-import { Canvas, useFrame, useThree, extend } from 'react-three-fiber';
+// import { Canvas, useFrame, useThree, extend } from 'react-three-fiber';
+import { Canvas, useFrame, useThree, extend } from '@react-three/fiber';
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 // import Model from './BasicShelf.js';
 import DrawerModel from './DrawerGLTFJSX';
+import AddShelfModel from './Assembly4AddShelf';
 // import Model from './BasicTable';
 import Model from './Assembly4';
 import { Controls, useControl, withControls } from 'react-three-gui';
@@ -22,9 +24,9 @@ const state = proxy({
 
 extend({ OrbitControls });
 const MyCanvas = withControls(Canvas);
-const unsubscribe = subscribe(state, () =>
-	console.log('state has changed to', state)
-);
+// const unsubscribe = subscribe(state, () =>
+// 	console.log('state has changed to', state)
+// );
 
 const Wrapper = styled.section`
 	height: 100%;
@@ -79,11 +81,12 @@ export default () => {
 					<Suspense fallback={null}>
 						<Model state={state}></Model>
 						<DrawerModel />
+						<AddShelfModel />
 					</Suspense>
 
 					<ControlOrbit />
 				</MyCanvas>
-				<Controls />
+				{/* <Controls /> */}
 				{/* <Picker /> */}
 			</Controls.Provider>
 			<div style={{ display: 'flex' }}>

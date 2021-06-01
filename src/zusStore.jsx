@@ -33,6 +33,19 @@ export const [useStore, api] = create((set) => ({
 
 	drawer: { shelf: 0, div: 0, pos: [500, 500, 500] },
 	boxes: [],
+	current: null,
+	items: {
+		Solid6: false,
+		Solid11: false,
+		Solid7: false,
+		Solid23: false,
+		Solid53: false,
+		Solid10: false,
+		Solid43: false,
+		Solid9: false,
+		Solid33: false,
+		Solid8: false,
+	},
 
 	adjustBoxes: (e) =>
 		set((state) => {

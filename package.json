@@ -3,6 +3,7 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
+		"@react-three/fiber": "^6.2.2",
 		"@testing-library/jest-dom": "^4.2.4",
 		"@testing-library/react": "^9.3.2",
 		"@testing-library/user-event": "^7.1.2",
@@ -14,12 +15,13 @@
 		"react-dom": "^16.13.0",
 		"react-redux": "^7.2.0",
 		"react-scripts": "3.4.0",
-		"react-three-fiber": "^4.0.27",
+		"react-spring": "^9.2.1",
+		"react-three-fiber": "^6.0.13",
 		"react-three-gui": "^0.4.2",
 		"redux": "^4.0.5",
 		"serve": "^11.3.2",
 		"styled-components": "^5.0.1",
-		"three": "^0.114.0",
+		"three": "^0.129.0",
 		"three-gltf-loader": "^1.111.0",
 		"valtio": "^1.0.5",
 		"zustand": "^2.2.3"

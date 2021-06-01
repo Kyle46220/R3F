@@ -81,3 +81,17 @@ Toggle 9
 Individual layer height choices
 
 I've just installed Valtio which is something that allows you to subsribe to state changes from anywhere. Because Now I have to fdigure out how to get a drawer to manifest inside cavity,
+
+Error -
+
+THREE.Matrix3: .getInverse() can't invert matrix, determinant is 0
+
+This is from having some scale-x={0} somewhere. likeyl from the GUI controls. maybe i could change the scales on this so they go from 0.000001 to 1, rather than from 0 to 1
+
+So i've figured out how to load just a shelf segment for height.
+
+Next is to add dividers for width. I can re-use some old functions here surely.
+
+I thik everything is going to done with scales for re-sizing. rather than actual dimensions. or maybe not.
+
+just made the functions for the hover. Next I have to figure out the state with valtio. a function to generate the state object from the nodes of each loaded model in a unique way perhaps.

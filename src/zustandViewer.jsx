@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { useStore, WidthControls, HeightControls, api } from './zusStore';
 
-import { Canvas, useFrame, useThree, extend } from 'react-three-fiber';
+import { Canvas, useFrame, useThree, extend } from '@react-three/fiber';
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Model from './DrawerGLTFJSX';
