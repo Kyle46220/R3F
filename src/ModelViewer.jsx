@@ -15,12 +15,6 @@ import AddShelfModel from './Assembly4AddShelf';
 import Model from './Assembly4';
 import { Controls, useControl, withControls } from 'react-three-gui';
 import { subscribe, useSnapshot, proxy } from 'valtio';
-// import { HexColorPicker } from 'react-colorful';
-
-const state = proxy({
-	current: null,
-	items: { Solid6: false, Solid11: false, Solid7: false, Solid23: false },
-});
 
 extend({ OrbitControls });
 const MyCanvas = withControls(Canvas);
@@ -37,6 +31,17 @@ const Wrapper = styled.section`
 	flex-direction: column;
 	margin: 3em;
 `;
+const handleClick = (e) => {
+	e.stopPropagation();
+	// 	const box = getSize(e.object.geometry.boundingBox);
+	console.log(e.intersections);
+	return (
+		<mesh>
+			<boxGeometry args={[1000, 1000, 1000]} />
+			<meshStandardMaterial colour="hotpink" />
+		</mesh>
+	);
+};
 
 const ControlOrbit = () => {
 	const orbitRef = useRef();
@@ -66,6 +71,7 @@ const ControlOrbit = () => {
 // }
 
 export default () => {
+	const ref = useRef();
 	// unsubscribe();
 	return (
 		<Wrapper>
@@ -75,13 +81,17 @@ export default () => {
 			</h1>
 
 			<Controls.Provider>
-				<MyCanvas camera={{ position: [700, 1000, 2500], far: 11000 }}>
+				<MyCanvas
+					onClick={(e) => handleClick(e)}
+					ref={ref}
+					camera={{ position: [700, 1000, 2500], far: 11000 }}
+				>
 					<ambientLight />
 					<pointLight position={[10, 10, 10]} />
 					<Suspense fallback={null}>
-						<Model state={state}></Model>
+						<Model onClick={(e) => handleClick(e)}></Model>
 						<DrawerModel />
-						<AddShelfModel />
+						<AddShelfModel></AddShelfModel>
 					</Suspense>
 
 					<ControlOrbit />

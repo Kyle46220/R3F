@@ -9,64 +9,35 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 // import { Controls, useControl } from 'react-three-gui';
 import { useSnapshot, proxy } from 'valtio';
 import { useStore } from './zusStore';
+import DrawerModel from './DrawerGLTFJSX';
 
 const state = proxy({
 	current: null,
-	items: {
-		Solid6: false,
-		Solid11: false,
-		Solid7: false,
-		Solid23: false,
-		Solid53: false,
-		Solid10: false,
-		Solid43: false,
-		Solid9: false,
-		Solid33: false,
-		Solid8: false,
-	},
+	items: {},
 });
-// const handleClick = () => {
-// 	const box = getSize(e.object.geometry.boundingBox);
-// };
-
-// const handlePointerOver = (e, nodes) => {
-// 	const array = Object.entries(nodes);
-// 	const result = array.filter((node) => node[1].name == e.object.name);
-// 	const name = result[0][0];
-// 	return (state.items.name = true);
-// };
-
-// const handlePointerOut = (e) => {
-// 	const array = Object.entries(nodes);
-// 	const result = array.filter((node) => node[1].name == e.object.name);
-// 	const name = result[0][0];
-// 	return (state.items.name = true);
-// };
 
 export default function Model(props) {
 	// const state = useStore();
 	const snap = useSnapshot(state);
 	const { nodes, materials } = useLoader(GLTFLoader, '/Assembly4.gltf');
 	const handlePointerOver = (e) => {
+		e.stopPropagation();
 		const array = Object.entries(nodes);
 		const result = array.filter((node) => node[1].name == e.object.name);
 		const name = result[0][0];
-		console.log(state.items[name]);
+
 		return (state.items[name] = true);
 	};
 
 	const handlePointerOut = (e) => {
+		e.stopPropagation();
 		const array = Object.entries(nodes);
 		const result = array.filter((node) => node[1].name == e.object.name);
 		const name = result[0][0];
-		console.log(state.items[name]);
+
 		return (state.items[name] = false);
 	};
 
-	// const rotationX = useControl('Rotation X', { type: 'number' });
-	// const posX = useControl('Pos X', { type: 'number' });
-	// const scaleX = useControl('Scale X', { type: 'number' });
-	// const scaleY = useControl('Scale Y', { type: 'number' });
 	const group = useRef();
 
 	const [hover, setHover] = useState(false);
@@ -110,18 +81,9 @@ export default function Model(props) {
 				name={nodes.Solid11_1.name}
 				material={nodes.Solid11_1.material}
 				geometry={nodes.Solid11_1.geometry}
-				// onPointerDown={(e) => handlePointerOver(state, e)}
 				onPointerOver={(e) => handlePointerOver(e)}
 				onPointerOut={(e) => handlePointerOut(e)}
-				// onPointerOver={(e) => (
-				// 	e.stopPropagation(), set(e.object.material.name)
-				// )}
-				// onPointerOut={(e) => e.intersections.length === 0 && set(null)}
-				// onPointerMissed={() => (state.current = null)}
-				// onPointerDown={(e) => (
-				// 	e.stopPropagation(),
-				// 	(state.current = e.object.material.name)
-				// )}
+				// onClick={(e) => handleClick(e)}
 			>
 				<meshStandardMaterial
 					attach="material"

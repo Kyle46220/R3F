@@ -95,3 +95,16 @@ Next is to add dividers for width. I can re-use some old functions here surely.
 I thik everything is going to done with scales for re-sizing. rather than actual dimensions. or maybe not.
 
 just made the functions for the hover. Next I have to figure out the state with valtio. a function to generate the state object from the nodes of each loaded model in a unique way perhaps.
+
+after struggleing for ages ot get the hover on added shelves to work, i realised it need the valtio useSnapshot function inside the main component to workj.
+
+trying to figure out the clickable drawer thing. I'm getting some clue froms ping pong.
+
+I need some state.
+
+Hook keeps track of active or not.
+onClick
+
+someState.set(e => e.position)
+
+there's maybe a ref here as well.
