@@ -19,7 +19,7 @@ export default function AddShelfModel(props) {
 	const handlePointerOver = (e) => {
 		e.stopPropagation();
 		const array = Object.entries(nodes);
-		const result = array.filter((node) => node[1].name == e.object.name);
+		const result = array.filter((node) => node[1].name === e.object.name);
 		const name = result[0][0];
 
 		return (state.items[name] = true);
@@ -28,7 +28,7 @@ export default function AddShelfModel(props) {
 	const handlePointerOut = (e) => {
 		e.stopPropagation();
 		const array = Object.entries(nodes);
-		const result = array.filter((node) => node[1].name == e.object.name);
+		const result = array.filter((node) => node[1].name === e.object.name);
 		const name = result[0][0];
 
 		return (state.items[name] = false);
@@ -36,14 +36,7 @@ export default function AddShelfModel(props) {
 	const group = useRef();
 
 	return (
-		<group
-			ref={group}
-			{...props}
-			dispose={null}
-			rotation-x={1.5}
-			position-y={295}
-			position-z={-25}
-		>
+		<group ref={group} {...props} dispose={null} position-z={-295}>
 			<mesh
 				material={nodes.Solid1.material}
 				geometry={nodes.Solid1.geometry}
