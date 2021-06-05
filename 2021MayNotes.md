@@ -166,3 +166,5 @@ valtio tutorial
 ok so finally got he drawers appearing in position. It was a regular small oversight of just accessing an object with the wrong index. DUH.
 
 next will be to make them change position with the on screen controls. Which I think I can do just by putting a property inside the drwer component when it is loaded inside drawer fill. I might have to have some maths but I think that is pretty straightforward. I just want to avoid having some big state object that has all this data in it.
+
+don't have different types of thins in something you want to iterate over. Also put the filter as early as possiblre/.

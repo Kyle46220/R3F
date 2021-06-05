@@ -26,9 +26,10 @@ export default function Model(props) {
 		e.stopPropagation();
 		const array = Object.entries(nodes);
 		const result = array.filter((node) => node[1].name == e.object.name);
+
 		const name = result[0][0];
 
-		return (store.items[name].hover = true);
+		return (store.items.mainShelves[name].hover = true);
 	};
 
 	const handlePointerOut = (e) => {
@@ -37,7 +38,7 @@ export default function Model(props) {
 		const result = array.filter((node) => node[1].name == e.object.name);
 		const name = result[0][0];
 
-		return (store.items[name].hover = false);
+		return (store.items.mainShelves[name].hover = false);
 	};
 
 	const handleClick = (e) => {
@@ -49,7 +50,7 @@ export default function Model(props) {
 		const name = result[0][0];
 		const center = new THREE.Vector3();
 		console.log(store.items, name);
-		return (store.items[
+		return (store.items.mainShelves[
 			name
 		].position = e.object.geometry.boundingBox.getCenter(center));
 	};
@@ -105,7 +106,7 @@ export default function Model(props) {
 					attach="material"
 					color={hover ? 'pink' : 'blue'}
 					transparent={true}
-					opacity={store.items.Solid11_1 ? 0.5 : 0}
+					opacity={store.items.mainShelves.Solid11_1.hover ? 0.5 : 0}
 				/>
 			</mesh>
 			<mesh
@@ -192,15 +193,15 @@ export default function Model(props) {
 				name={nodes.Solid23.name}
 				material={nodes.Solid23.material}
 				geometry={nodes.Solid23.geometry}
-				onPointerOver={() => (store.items.Solid23.hover = true)}
-				onPointerOut={() => (store.items.Solid23.hover = false)}
+				onPointerOver={(e) => handlePointerOver(e)}
+				onPointerOut={(e) => handlePointerOut(e)}
 				onClick={(e) => handleClick(e)}
 			>
 				<meshStandardMaterial
 					attach="material"
 					color={hover ? 'pink' : 'blue'}
 					transparent={true}
-					opacity={store.items.Solid23 ? 1 : 0}
+					opacity={store.items.mainShelves.Solid23.hover ? 1 : 0}
 				/>
 			</mesh>
 			<mesh
@@ -215,7 +216,7 @@ export default function Model(props) {
 					attach="material"
 					color={hover ? 'pink' : 'blue'}
 					transparent={true}
-					opacity={store.items.Solid33 ? 0.5 : 0}
+					opacity={store.items.mainShelves.Solid33.hover ? 0.5 : 0}
 				/>
 			</mesh>
 			<mesh
@@ -230,7 +231,7 @@ export default function Model(props) {
 					attach="material"
 					color={hover ? 'pink' : 'blue'}
 					transparent={true}
-					opacity={store.items.Solid43 ? 0.5 : 0}
+					opacity={store.items.mainShelves.Solid43.hover ? 0.5 : 0}
 				/>
 			</mesh>
 			<mesh
@@ -245,7 +246,7 @@ export default function Model(props) {
 					attach="material"
 					color={hover ? 'pink' : 'blue'}
 					transparent={true}
-					opacity={store.items.Solid53 ? 0.5 : 0}
+					opacity={store.items.mainShelves.Solid53.hover ? 0.5 : 0}
 				/>
 			</mesh>
 			<mesh
@@ -260,7 +261,7 @@ export default function Model(props) {
 					attach="material"
 					color={hover ? 'pink' : 'blue'}
 					transparent={true}
-					opacity={store.items.Solid6 ? 0.5 : 0}
+					opacity={store.items.mainShelves.Solid6.hover ? 0.5 : 0}
 				/>
 			</mesh>
 			<mesh
@@ -275,7 +276,7 @@ export default function Model(props) {
 					attach="material"
 					color={hover ? 'pink' : 'blue'}
 					transparent={true}
-					opacity={store.items.Solid7 ? 0.5 : 0}
+					opacity={store.items.mainShelves.Solid7.hover ? 0.5 : 0}
 				/>
 			</mesh>
 			<mesh
@@ -290,7 +291,7 @@ export default function Model(props) {
 					attach="material"
 					color={hover ? 'pink' : 'blue'}
 					transparent={true}
-					opacity={store.items.Solid8 ? 0.5 : 0}
+					opacity={store.items.mainShelves.Solid8.hover ? 0.5 : 0}
 				/>
 			</mesh>
 			<mesh
@@ -305,7 +306,7 @@ export default function Model(props) {
 					attach="material"
 					color={hover ? 'pink' : 'blue'}
 					transparent={true}
-					opacity={store.items.Solid9 ? 0.5 : 0}
+					opacity={store.items.mainShelves.Solid9.hover ? 0.5 : 0}
 				/>
 			</mesh>
 			<mesh
@@ -320,7 +321,7 @@ export default function Model(props) {
 					attach="material"
 					color={hover ? 'pink' : 'blue'}
 					transparent={true}
-					opacity={store.items.Solid10 ? 1 : 0}
+					opacity={store.items.mainShelves.Solid10.hover ? 1 : 0}
 				/>
 			</mesh>
 			<mesh
@@ -331,7 +332,7 @@ export default function Model(props) {
 					attach="material"
 					color={hover ? 'pink' : 'blue'}
 					// transparent={true}
-					// opacity={store.items.Solid10 ? 1 : 0}
+					// opacity={store.items.Solid10.hover ? 1 : 0}
 				/>
 			</mesh>
 		</group>

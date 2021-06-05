@@ -7,14 +7,11 @@ import React, { useRef, useState } from 'react';
 import { useLoader } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { useSnapshot, proxy } from 'valtio';
-const state = proxy({
-	current: null,
-	items: {},
-});
+import store from './store';
 
 export default function AddShelfModel(props) {
 	const { nodes, materials } = useLoader(GLTFLoader, '/Assembly4.gltf');
-	const snap = useSnapshot(state);
+	const snap = useSnapshot(store);
 
 	const handlePointerOver = (e) => {
 		e.stopPropagation();
@@ -22,7 +19,7 @@ export default function AddShelfModel(props) {
 		const result = array.filter((node) => node[1].name === e.object.name);
 		const name = result[0][0];
 
-		return (state.items[name] = true);
+		return (store.items.addedShelves.[name].hover = true);
 	};
 
 	const handlePointerOut = (e) => {
@@ -30,8 +27,22 @@ export default function AddShelfModel(props) {
 		const array = Object.entries(nodes);
 		const result = array.filter((node) => node[1].name === e.object.name);
 		const name = result[0][0];
+		console.log(result);
 
-		return (state.items[name] = false);
+		return (store.items.addedShelves.[name].hover = false);
+	};
+	const handleClick = (e) => {
+		//this function will put the clicked thing into the store object. in its right category
+		e.stopPropagation();
+
+		const array = Object.entries(nodes);
+		const result = array.filter((node) => node[1].name == e.object.name);
+		const name = result[0][0];
+		const center = new THREE.Vector3();
+		console.log(store.items, name);
+		return (store.items.addedShelves[
+			name
+		].position = e.object.geometry.boundingBox.getCenter(center));
 	};
 	const group = useRef();
 
@@ -51,6 +62,7 @@ export default function AddShelfModel(props) {
 				geometry={nodes.Solid11_1.geometry}
 				onPointerOver={(e) => handlePointerOver(e)}
 				onPointerOut={(e) => handlePointerOut(e)}
+				onClick={(e) => handleClick(e)}
 			>
 				<meshStandardMaterial
 					attach="material"
@@ -78,17 +90,17 @@ export default function AddShelfModel(props) {
 			/>
 
 			<mesh
-				name={nodes.Solid6.name}
 				material={nodes.Solid6.material}
 				geometry={nodes.Solid6.geometry}
 				onPointerOver={(e) => handlePointerOver(e)}
 				onPointerOut={(e) => handlePointerOut(e)}
+				onClick={(e) => handleClick(e)}
 			>
 				<meshStandardMaterial
 					attach="material"
 					color={'blue'}
 					transparent={true}
-					opacity={snap.items.Solid6 ? 0.5 : 0}
+					opacity={snap.items.Solid6a ? 0.5 : 0}
 				/>
 			</mesh>
 		</group>

@@ -74,8 +74,10 @@ const ControlOrbit = () => {
 // 		</div>
 // 	);
 // }
-function DrawerFill() {
+const DrawerFill = () => {
 	const snap = useSnapshot(store);
+	const mesh = useRef();
+	console.log(mesh.current);
 	console.log(Object.entries(snap.items));
 
 	//putndrawers where state says drawers should go
@@ -99,17 +101,25 @@ function DrawerFill() {
 
 	return (
 		<>
-			{Object.entries(snap.items).map((item) => {
-				let position = item[1].position;
-				if (position !== null) {
+			{Object.entries(snap.items.mainShelves).map((item) => {
+				console.log(item[1].position);
+				if (item[1].position !== null || false) {
+					let position = item[1].position;
+
 					console.log(position);
 					return (
-						<DrawerModel
-							//I think I can just put the scale from the constrols in here and it might work
-							rotation-x={-1.5}
-							position={[position.x, position.y, position.z]}
-							localToWorld={[position.x, position.y, position.z]}
-						/>
+						<group ref={mesh}>
+							<DrawerModel
+								//I think I can just put the scale from the constrols in here and it might work
+								rotation-x={-1.5}
+								position={[position.x, position.y, position.z]}
+								localToWorld={[
+									position.x,
+									position.y,
+									position.z,
+								]}
+							/>
+						</group>
 					);
 				} else {
 					return null;
@@ -117,7 +127,7 @@ function DrawerFill() {
 			})}
 		</>
 	);
-}
+};
 
 export default () => {
 	const [clicked, setClicked] = useState(false);
@@ -158,12 +168,10 @@ export default () => {
 						{/* <Model onClick={(e) => handleClick(e)}></Model> */}
 
 						<Model />
-
-						<AddShelfModel></AddShelfModel>
-					</Suspense>
-					<Suspense fallback={null}>
 						<DrawerFill />
+						{/* <AddShelfModel></AddShelfModel> */}
 					</Suspense>
+					<Suspense fallback={null}></Suspense>
 
 					<ControlOrbit />
 				</MyCanvas>

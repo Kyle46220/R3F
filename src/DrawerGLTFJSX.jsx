@@ -26,7 +26,7 @@ export default function DrawerModel(props) {
 			{...props}
 			dispose={null}
 			position={props.position}
-			// visible={!clicked}
+			visible={!clicked}
 			onClick={(e) => setClicked(!clicked)}
 			// rotation-x={rotationX}
 			// position-x={posX * 100}
