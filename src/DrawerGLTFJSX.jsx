@@ -37,34 +37,66 @@ export default function DrawerModel(props) {
 				geometry={nodes.Solid1.geometry}
 				// position={(0, 0, 0)}
 			>
-				<meshStandardMaterial attach="material" color="hotpink" />
+				<meshStandardMaterial
+					transparent={true}
+					opacity={0.5}
+					attach="material"
+					color="teal"
+				/>
 			</mesh>
 			<mesh
 				material={materials['191,191,191']}
 				geometry={nodes.Solid2.geometry}
 				// scale-x={scaleX}
 				// position-x={posX * 1000}
-			/>
-			<mesh
-				material={materials['191,191,191']}
-				geometry={nodes.Solid3.geometry}
-			/>
+			>
+				<meshStandardMaterial
+					transparent={true}
+					opacity={0.5}
+					attach="material"
+					color="teal"
+				/>
+			</mesh>
+			<mesh geometry={nodes.Solid3.geometry}>
+				<meshStandardMaterial
+					transparent={true}
+					opacity={0.5}
+					attach="material"
+					color="teal"
+				/>
+			</mesh>
 			<mesh
 				material={materials['191,191,191']}
 				geometry={nodes.Solid4.geometry}
-			/>
+			>
+				<meshStandardMaterial
+					transparent={true}
+					opacity={0.5}
+					attach="material"
+					color="teal"
+				/>
+			</mesh>
 			<mesh
 				material={materials['191,191,191']}
 				geometry={nodes.Solid5.geometry}
-			/>
+			>
+				<meshStandardMaterial
+					transparent={true}
+					opacity={0.5}
+					attach="material"
+					color="teal"
+				/>
+			</mesh>
 			<mesh
 				material={materials['191,191,191']}
 				geometry={nodes.Solid6.geometry}
 			>
-				<meshStandardMaterial attach="material" color="teal">
-					{/* {console.log('Hello', nodes.Solid1.position)}
-					{nodes.Solid1.position.set(1000, 2, 3)} */}
-				</meshStandardMaterial>
+				<meshStandardMaterial
+					transparent={true}
+					opacity={0.5}
+					attach="material"
+					color="teal"
+				/>
 			</mesh>
 		</group>
 	);

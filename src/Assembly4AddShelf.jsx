@@ -10,44 +10,49 @@ import { useSnapshot, proxy } from 'valtio';
 import store from './store';
 
 export default function AddShelfModel(props) {
+	const shelfNumber = props.shelfNumber;
 	const { nodes, materials } = useLoader(GLTFLoader, '/Assembly4.gltf');
 	const snap = useSnapshot(store);
 
 	const handlePointerOver = (e) => {
 		e.stopPropagation();
-		const array = Object.entries(nodes);
-		const result = array.filter((node) => node[1].name === e.object.name);
-		const name = result[0][0];
+		const name = e.object.name;
 
-		return (store.items.addedShelves.[name].hover = true);
+		return (store.items.addedShelfModels[`shelf${shelfNumber}`][
+			name
+		].hover = true);
 	};
 
 	const handlePointerOut = (e) => {
 		e.stopPropagation();
-		const array = Object.entries(nodes);
-		const result = array.filter((node) => node[1].name === e.object.name);
-		const name = result[0][0];
-		console.log(result);
+		const name = e.object.name;
 
-		return (store.items.addedShelves.[name].hover = false);
+		return (store.items.addedShelfModels[`shelf${shelfNumber}`][
+			name
+		].hover = false);
 	};
 	const handleClick = (e) => {
 		//this function will put the clicked thing into the store object. in its right category
 		e.stopPropagation();
+		const name = e.object.name; // here is where i am using the name which they have in common to shoose where to save the position
 
-		const array = Object.entries(nodes);
-		const result = array.filter((node) => node[1].name == e.object.name);
-		const name = result[0][0];
 		const center = new THREE.Vector3();
-		console.log(store.items, name);
-		return (store.items.addedShelves[
+
+		return (store.items.addedShelfModels[`shelf${shelfNumber}`][
 			name
 		].position = e.object.geometry.boundingBox.getCenter(center));
 	};
+
 	const group = useRef();
 
 	return (
-		<group ref={group} {...props} dispose={null} position-z={-295}>
+		<group
+			ref={group}
+			{...props}
+			// position-z={-295 * snap.transforms.scale.y}
+			scale-x={snap.transforms.scale.x}
+			scale-z={1}
+		>
 			<mesh
 				material={nodes.Solid1.material}
 				geometry={nodes.Solid1.geometry}
@@ -68,7 +73,12 @@ export default function AddShelfModel(props) {
 					attach="material"
 					color={'blue'}
 					transparent={true}
-					opacity={snap.items.Solid11_1 ? 0.5 : 0}
+					opacity={
+						snap.items.addedShelfModels[`shelf${shelfNumber}`]
+							.Solid11_1
+							? 0.5
+							: 0
+					}
 				/>
 			</mesh>
 			<mesh
@@ -90,6 +100,7 @@ export default function AddShelfModel(props) {
 			/>
 
 			<mesh
+				name={nodes.Solid6.name}
 				material={nodes.Solid6.material}
 				geometry={nodes.Solid6.geometry}
 				onPointerOver={(e) => handlePointerOver(e)}
@@ -100,7 +111,12 @@ export default function AddShelfModel(props) {
 					attach="material"
 					color={'blue'}
 					transparent={true}
-					opacity={snap.items.Solid6a ? 0.5 : 0}
+					opacity={
+						snap.items.addedShelfModels[`shelf${shelfNumber}`]
+							.Solid6
+							? 0.5
+							: 0
+					}
 				/>
 			</mesh>
 		</group>

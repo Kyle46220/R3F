@@ -172,3 +172,36 @@ don't have different types of thins in something you want to iterate over. Also 
 tryiung to update state with the constrols - did this from inside the react gui hook with state key
 
 then trying to update drawer position from state
+
+something to do would be to antidote the disfiguration that goes from the scale - it could be like, update position by scale, but then cancel the actuul scaling of the part with the opposite of the scale, or by re scaling it smaller.
+
+next is going to be getting the add shelf function working.
+
+OOOKKK so whatever in the bit in the mesh with the = can be accessed from that object later. like with the name. its like props i think.
+
+the function i had in the pointer over thing to get the names was redundant. so why isn't it updating the store? not sure. the hovers will be the clue.
+
+next - to add the shelf from height. make shelf adder function in the model viewer. then have a state item that is quantity of extra shelves added. make a function in shelf adder that reads state and multiplies this.
+
+DONE - i made the heigh control scale and add shelves AND reposition them accurately. just multiplying things by scale a lot.
+
+next
+
+-   change state object to handle changing shelf qty.
+
+-   make drawers work - stop their position scaling with height control.
+-   hover still doesn't work
+-   adjust width controls. this will be a combination of both qty and scale so I'm glad i figured this out. at this stage the scale is a magic number that i may have to decompose into separate variables later.
+
+its because the drawer position is not being adjusted for height. The position has to come after with a multipler based on the iterator and the shelf height multiplied together. This is getting complicated with knowing how to do the transfomr matrix.
+
+Next handle for multiple sheves - like new shelf adds new state object.
+
+If i changes the opacity of every object to a percetnage then i would be able to tell when objects were overlapped.
+
+make controls change state of shelf qty or just scale. as it already does. then make shelf adder write to new state objects. state will need to already be there when the shelf is added for the hove to work.
+ok so it's something to do with names. maybe it would work better if it were arrays of objects?
+
+useEffect the last arg is the listener. when it changes use effect is fired.
+
+i think i need to make sort of state dispatch functions. then these are triggered with subscriptions and use effect. and these are what aters the state object when i bring new objects ont the scene.

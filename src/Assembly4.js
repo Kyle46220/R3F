@@ -25,44 +25,29 @@ export default function Model(props) {
 		value: 1,
 		state: [snap.transforms.scale.y, (e) => (store.transforms.scale.y = e)],
 	});
-	// useEffect(() => {
-	// 	if (group.current) {
-	// 		//update state scale numbers
-	// 		store.transforms.scale = group.current.scale;
-	// 	}
-	// });
-
-	console.log(store.transforms.scale);
 
 	const handlePointerOver = (e) => {
 		e.stopPropagation();
-		const array = Object.entries(nodes);
-		const result = array.filter((node) => node[1].name == e.object.name);
+		const name = e.object.name;
 
-		const name = result[0][0];
-
-		return (store.items.mainShelves[name].hover = true);
+		return (store.items.presetModel.mainShelves[name].hover = true);
 	};
 
 	const handlePointerOut = (e) => {
 		e.stopPropagation();
-		const array = Object.entries(nodes);
-		const result = array.filter((node) => node[1].name == e.object.name);
-		const name = result[0][0];
+		const name = e.object.name;
 
-		return (store.items.mainShelves[name].hover = false);
+		return (store.items.presetModel.mainShelves[name].hover = false);
 	};
 
 	const handleClick = (e) => {
 		//this function will put the clicked thing into the state object. in its right category
 		e.stopPropagation();
+		const name = e.object.name;
 
-		const array = Object.entries(nodes);
-		const result = array.filter((node) => node[1].name == e.object.name);
-		const name = result[0][0];
 		const center = new THREE.Vector3();
-		console.log(store.items, name);
-		return (store.items.mainShelves[
+
+		return (store.items.presetModel.mainShelves[
 			name
 		].position = e.object.geometry.boundingBox.getCenter(center));
 	};
@@ -79,7 +64,7 @@ export default function Model(props) {
 			// dispose={null}
 			// position-x={posX * 500}
 			scale-x={widthScale}
-			scale-z={heightScale}
+			scale-z={1}
 			// 	scale-y={1}
 			//   scale-z={1}
 			// scale={(1, 1, 1)}
@@ -118,7 +103,11 @@ export default function Model(props) {
 					attach="material"
 					color={hover ? 'pink' : 'blue'}
 					transparent={true}
-					opacity={store.items.mainShelves.Solid11_1.hover ? 0.5 : 0}
+					opacity={
+						store.items.presetModel.mainShelves.Solid11_1.hover
+							? 0.5
+							: 0
+					}
 				/>
 			</mesh>
 			<mesh
@@ -213,7 +202,11 @@ export default function Model(props) {
 					attach="material"
 					color={hover ? 'pink' : 'blue'}
 					transparent={true}
-					opacity={store.items.mainShelves.Solid23.hover ? 1 : 0}
+					opacity={
+						store.items.presetModel.mainShelves.Solid23.hover
+							? 1
+							: 0
+					}
 				/>
 			</mesh>
 			<mesh
@@ -228,7 +221,11 @@ export default function Model(props) {
 					attach="material"
 					color={hover ? 'pink' : 'blue'}
 					transparent={true}
-					opacity={store.items.mainShelves.Solid33.hover ? 0.5 : 0}
+					opacity={
+						store.items.presetModel.mainShelves.Solid33.hover
+							? 0.5
+							: 0
+					}
 				/>
 			</mesh>
 			<mesh
@@ -243,7 +240,11 @@ export default function Model(props) {
 					attach="material"
 					color={hover ? 'pink' : 'blue'}
 					transparent={true}
-					opacity={store.items.mainShelves.Solid43.hover ? 0.5 : 0}
+					opacity={
+						store.items.presetModel.mainShelves.Solid43.hover
+							? 0.5
+							: 0
+					}
 				/>
 			</mesh>
 			<mesh
@@ -258,7 +259,11 @@ export default function Model(props) {
 					attach="material"
 					color={hover ? 'pink' : 'blue'}
 					transparent={true}
-					opacity={store.items.mainShelves.Solid53.hover ? 0.5 : 0}
+					opacity={
+						store.items.presetModel.mainShelves.Solid53.hover
+							? 0.5
+							: 0
+					}
 				/>
 			</mesh>
 			<mesh
@@ -273,7 +278,11 @@ export default function Model(props) {
 					attach="material"
 					color={hover ? 'pink' : 'blue'}
 					transparent={true}
-					opacity={store.items.mainShelves.Solid6.hover ? 0.5 : 0}
+					opacity={
+						store.items.presetModel.mainShelves.Solid6.hover
+							? 0.5
+							: 0
+					}
 				/>
 			</mesh>
 			<mesh
@@ -288,7 +297,11 @@ export default function Model(props) {
 					attach="material"
 					color={hover ? 'pink' : 'blue'}
 					transparent={true}
-					opacity={store.items.mainShelves.Solid7.hover ? 0.5 : 0}
+					opacity={
+						store.items.presetModel.mainShelves.Solid7.hover
+							? 0.5
+							: 0
+					}
 				/>
 			</mesh>
 			<mesh
@@ -303,7 +316,11 @@ export default function Model(props) {
 					attach="material"
 					color={hover ? 'pink' : 'blue'}
 					transparent={true}
-					opacity={store.items.mainShelves.Solid8.hover ? 0.5 : 0}
+					opacity={
+						store.items.presetModel.mainShelves.Solid8.hover
+							? 0.5
+							: 0
+					}
 				/>
 			</mesh>
 			<mesh
@@ -318,7 +335,11 @@ export default function Model(props) {
 					attach="material"
 					color={hover ? 'pink' : 'blue'}
 					transparent={true}
-					opacity={store.items.mainShelves.Solid9.hover ? 0.5 : 0}
+					opacity={
+						store.items.presetModel.mainShelves.Solid9.hover
+							? 0.5
+							: 0
+					}
 				/>
 			</mesh>
 			<mesh
@@ -333,7 +354,11 @@ export default function Model(props) {
 					attach="material"
 					color={hover ? 'pink' : 'blue'}
 					transparent={true}
-					opacity={store.items.mainShelves.Solid10.hover ? 1 : 0}
+					opacity={
+						store.items.presetModel.mainShelves.Solid10.hover
+							? 1
+							: 0
+					}
 				/>
 			</mesh>
 			<mesh

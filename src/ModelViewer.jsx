@@ -35,18 +35,6 @@ const Wrapper = styled.section`
 	flex-direction: column;
 	margin: 3em;
 `;
-// const handleClick = (e) => {
-// 	e.stopPropagation();
-// 	// 	const box = getSize(e.object.geometry.boundingBox);
-// 	console.log(e.intersections);
-
-// 	return (
-// 		<mesh>
-// 			<boxGeometry args={[1000, 1000, 1000]} />
-// 			<meshStandardMaterial colour="hotpink" />
-// 		</mesh>
-// 	);
-// };
 
 const ControlOrbit = () => {
 	const orbitRef = useRef();
@@ -61,102 +49,119 @@ const ControlOrbit = () => {
 	return <orbitControls args={[camera, gl.domElement]} ref={orbitRef} />;
 };
 
-// function Picker() {
-// 	const snap = useSnapshot(state);
-// 	return (
-// 		<div style={{ display: snap.current ? 'block' : 'none' }}>
-// 			<HexColorPicker
-// 				className="picker"
-// 				color={snap.items[snap.current]}
-// 				onChange={(color) => (state.items[snap.current] = color)}
-// 			/>
-// 			<h1>{snap.current}</h1>
-// 		</div>
-// 	);
-// }
-const DrawerFill = () => {
-	const snap = useSnapshot(store);
-	const mesh = useRef();
-	console.log(mesh.current);
-	console.log(Object.entries(snap.items));
+// const widthScale = useControl('Width Scale', {
+// 	type: 'number',
+// 	value: 1,
+// 	state: [snap.transforms.scale.x, (e) => (store.transforms.scale.x = e)],
+// });
 
-	//putndrawers where state says drawers should go
-	// if
-	// for (var item in snap.items) {
-	// 	if (snap.items.hasOwnProperty(item)) {
-	// 		<DrawerModel
-	// 			position={snap.current}
-	// 			onClick={(store.current = null)}
-	// 		/>;
-	// 	}
-	// }
-	// const mapFunc = Object.entries(snap.items).map((item) => {
-	// 	console.log(item.position);
-	// 	return (
-	// 		<Suspense fallback={null}>
-	// 			<DrawerModel position={item.position} />;
-	// 		</Suspense>
-	// 	);
-	// });
+// const heightScale = useControl('Height Scale', {
+// 	type: 'number',
+// 	value: 1,
+// 	state: [snap.transforms.scale.y, (e) => (store.transforms.scale.y = e)],
+// });
+const updateShelfState = (snap) => {
+	const newShelf = {
+		addedShelfDefault: {
+			Solid11_1: { hover: false, position: null, height: 300 },
+			Solid6: { hover: false, position: null, height: 300 },
+		},
+	};
+	//i need to overwrite the add shelf items when the scale changes
+	// object.assign will add new ones.
+	// a filter will get rid of the old ones.
+	// based on scale.y, if needed creates more, gtes rid of ones that aren't there.
+	Array.from({ length: snap.transforms.scale.y }, (x, i) => {
+		//this loop adds a new state object item that is named with number
+		const newKey = `Shelf${i}`;
+		Object.assign(store.items, newShelf);
+		store.items.addedShelfModels[newKey] = store.items.Default;
+		delete store.items.addedShelfDefault;
+	});
+};
+
+const ShelfAdder = () => {
+	const snap = useSnapshot(store);
+	// to put a thing that takes the shelf height quantity and creates the corresposnding state object.
+	console.log(snap, store);
+	const ref = useRef(snap);
+
+	useEffect(() => {
+		updateShelfState(snap);
+	}, [snap.transforms.scale.y]);
 
 	return (
 		<>
-			{Object.entries(snap.items.mainShelves).map((item) => {
-				console.log(item[1].position); // says null when there's no drawer in there
-				if (item[1].position !== null || false) {
-					let position = item[1].position;
+			{/* should this be iterating from an array or directly from state? could i use a listener subscriptsion? i.e wait for change, when changed, addShelf? */}
+			{Object.entries(snap.items.addedShelfModels).map((x, i) => {
+				return (
+					<AddShelfModel
+						shelfNumber={i}
+						key={`shelf${i}`}
+						position-z={-295 * (i + 1)}
+					/>
+				);
+			})}
+		</>
+		// {Array.from({ length: snap.transforms.scale.y }, (x, i) => {
+		// 	return (
+		// 		<AddShelfModel
+		// 			shelfNumber={i}
+		// 			key={`shelf${i}`}
+		// 			position-z={-295 * (i + 1)}
+		// 		/>
+		// 	);
+		// })}
+	);
+};
 
-					console.log(snap.transforms.scale);
-					return (
-						<group ref={mesh}>
-							<DrawerModel
-								//I think I can just put the scale from the constrols in here and it might work
-								rotation-x={-1.5}
-								position={[
-									position.x * snap.transforms.scale.x,
-									position.y,
-									position.z * snap.transforms.scale.y,
-								]}
-								localToWorld={[
-									position.x,
-									position.y,
-									position.z,
-								]}
-							/>
-						</group>
-					);
-				} else {
-					return null;
-				}
+const DrawerFill = () => {
+	const snap = useSnapshot(store);
+	const mesh = useRef();
+
+	// a function that gets the drawers
+
+	const getDrawers = () => {};
+	//the loop below is a mess and needs to be fixed. There is a much simpler way to do this.
+
+	// the positions are already set.
+	return (
+		<>
+			{Object.entries(snap.items).map((set) => {
+				console.log(Object.entries(snap.items));
+				return Object.entries(set[1]).map((row, ii) => {
+					return Object.entries(row[1]).map((item, i) => {
+						console.log(item);
+						if (item[1].position !== null || false) {
+							let position = item[1].position;
+
+							return (
+								<group ref={mesh} key={`drawer${ii}${i}`}>
+									<DrawerModel
+										//I think I can just put the scale from the constrols in here and it might work
+										rotation-x={-1.5}
+										position={[
+											position.x *
+												snap.transforms.scale.x,
+											position.y,
+											position.z,
+											// position.z +
+											// 	-(ii + 1) * item[1].height, // the height here is to copy the transform that has be done to each shelf.
+										]}
+									/>
+								</group>
+							);
+						} else {
+							return null;
+						}
+					});
+				});
 			})}
 		</>
 	);
 };
 
 export default () => {
-	const [clicked, setClicked] = useState(false);
-	const mesh = useRef();
-	// unsubscribe();
-
-	// const handleClick = (e) => {
-	// 	// const intersect = e.stopPropagation();
-	// 	//using the ref here to make it so that we can do stuff to the mesh that'sno in here. Whewn the ref is called, whatever happenend to mesh in here will happen to it. I think. So how do I get from here to a functional component?
-
-	// 	// mesh.matrixAutoUpdate(false);
-	// 	console.log(e.intersections[0]);
-	// 	const vector = new THREE.Vector3();
-	// 	const intersect = e.intersections[0];
-	// 	const matrix = intersect.object.matrixWorld;
-
-	// 	vector.setFromMatrixPosition(matrix);
-	// 	console.log(vector, matrix);
-	// 	// const scale = { x: 0, y: 0, z: 0 };
-	// 	// const quarternion = { x: 0, y: 0, z: 0 };
-	// 	// matrix.decompose();
-	// 	console.log(vector.setFromMatrixPosition(matrix));
-	// 	// clicked.set(position);
-	// 	// const centerPoint = e.intersections[0];
-	// };
 	return (
 		<Wrapper>
 			<h1 style={{ margin: '1rem' }}>
@@ -174,6 +179,7 @@ export default () => {
 						<Model />
 						<DrawerFill />
 						{/* <AddShelfModel></AddShelfModel> */}
+						<ShelfAdder />
 					</Suspense>
 					<Suspense fallback={null}></Suspense>
 
@@ -182,10 +188,7 @@ export default () => {
 				<Controls />
 				{/* <Picker /> */}
 			</Controls.Provider>
-			<div style={{ display: 'flex' }}>
-				<HeightControls />
-				<WidthControls />
-			</div>
+			<div style={{ display: 'flex' }}></div>
 		</Wrapper>
 	);
 };

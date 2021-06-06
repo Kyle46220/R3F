@@ -2,23 +2,39 @@ import { proxy } from 'valtio';
 
 const store = proxy({
 	current: null,
-	transforms: { scale: { x: 2, y: 2, z: 2 } },
+	transforms: { scale: { x: 1, y: 1, z: 1 }, shelfQTY: 3 },
 	items: {
-		mainShelves: {
-			Solid11_1: { hover: false, position: null },
-			Solid6: { hover: false, position: null },
-			Solid7: { hover: false, position: null },
-			Solid23: { hover: false, position: null },
-			Solid53: { hover: false, position: null },
-			Solid10: { hover: false, position: null },
-			Solid43: { hover: false, position: null },
-			Solid9: { hover: false, position: null },
-			Solid33: { hover: false, position: null },
-			Solid8: { hover: false, position: null },
+		// default: {
+		// 	Solid11_1: { hover: false, position: null, height: 300 },
+		// 	Solid6: { hover: false, position: null, height: 300 },
+		// },
+		presetModel: {
+			mainShelves: {
+				Solid11_1: { hover: false, position: null, height: 300 },
+				Solid6: { hover: false, position: null, height: 300 },
+				Solid7: { hover: false, position: null, height: 300 },
+				Solid23: { hover: false, position: null, height: 300 },
+				Solid53: { hover: false, position: null, height: 300 },
+				Solid10: { hover: false, position: null, height: 300 },
+				Solid43: { hover: false, position: null, height: 300 },
+				Solid9: { hover: false, position: null, height: 300 },
+				Solid33: { hover: false, position: null, height: 300 },
+				Solid8: { hover: false, position: null, height: 300 },
+			},
 		},
-		addedShelves: {
-			Solid11_1: { hover: false, position: null },
-			Solid6: { hover: false, position: null },
+		addedShelfModels: {
+			shelf0: {
+				Solid11_1: { hover: false, position: null, height: 300 },
+				Solid6: { hover: false, position: null, height: 300 },
+			},
+			shelf1: {
+				Solid11_1: { hover: false, position: null, height: 300 },
+				Solid6: { hover: false, position: null, height: 300 },
+			},
+			shelf2: {
+				Solid11_1: { hover: false, position: null, height: 300 },
+				Solid6: { hover: false, position: null, height: 300 },
+			},
 		},
 	},
 });
