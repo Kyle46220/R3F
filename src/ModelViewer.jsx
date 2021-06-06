@@ -102,17 +102,21 @@ const DrawerFill = () => {
 	return (
 		<>
 			{Object.entries(snap.items.mainShelves).map((item) => {
-				console.log(item[1].position);
+				console.log(item[1].position); // says null when there's no drawer in there
 				if (item[1].position !== null || false) {
 					let position = item[1].position;
 
-					console.log(position);
+					console.log(snap.transforms.scale);
 					return (
 						<group ref={mesh}>
 							<DrawerModel
 								//I think I can just put the scale from the constrols in here and it might work
 								rotation-x={-1.5}
-								position={[position.x, position.y, position.z]}
+								position={[
+									position.x * snap.transforms.scale.x,
+									position.y,
+									position.z * snap.transforms.scale.y,
+								]}
 								localToWorld={[
 									position.x,
 									position.y,
@@ -175,7 +179,7 @@ export default () => {
 
 					<ControlOrbit />
 				</MyCanvas>
-				{/* <Controls /> */}
+				<Controls />
 				{/* <Picker /> */}
 			</Controls.Provider>
 			<div style={{ display: 'flex' }}>
