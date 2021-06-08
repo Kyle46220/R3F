@@ -17,6 +17,7 @@ export default function AddShelfModel(props) {
 	const handlePointerOver = (e) => {
 		e.stopPropagation();
 		const name = e.object.name;
+		// can i use a ref instead of the shelf number? OR MAYbeE ITS THE CURRENT??
 
 		return (store.items.addedShelfModels[`shelf${shelfNumber}`][
 			name
@@ -65,20 +66,20 @@ export default function AddShelfModel(props) {
 				name={nodes.Solid11_1.name}
 				material={nodes.Solid11_1.material}
 				geometry={nodes.Solid11_1.geometry}
-				onPointerOver={(e) => handlePointerOver(e)}
-				onPointerOut={(e) => handlePointerOut(e)}
+				// onPointerOver={(e) => handlePointerOver(e)}
+				// onPointerOut={(e) => handlePointerOut(e)}
 				onClick={(e) => handleClick(e)}
 			>
 				<meshStandardMaterial
 					attach="material"
 					color={'blue'}
 					transparent={true}
-					opacity={
-						snap.items.addedShelfModels[`shelf${shelfNumber}`]
-							.Solid11_1
-							? 0.5
-							: 0
-					}
+					// opacity={
+					// 	snap.items.addedShelfModels[`shelf${shelfNumber}`]
+					// 		.Solid11_1
+					// 		? 0.5
+					// 		: 0
+					// }
 				/>
 			</mesh>
 			<mesh
@@ -103,20 +104,20 @@ export default function AddShelfModel(props) {
 				name={nodes.Solid6.name}
 				material={nodes.Solid6.material}
 				geometry={nodes.Solid6.geometry}
-				onPointerOver={(e) => handlePointerOver(e)}
-				onPointerOut={(e) => handlePointerOut(e)}
+				// onPointerOver={(e) => handlePointerOver(e)}
+				// onPointerOut={(e) => handlePointerOut(e)}
 				onClick={(e) => handleClick(e)}
 			>
 				<meshStandardMaterial
 					attach="material"
 					color={'blue'}
 					transparent={true}
-					opacity={
-						snap.items.addedShelfModels[`shelf${shelfNumber}`]
-							.Solid6
-							? 0.5
-							: 0
-					}
+					// opacity={
+					// 	snap.items.addedShelfModels[`shelf${shelfNumber}`]
+					// 		.Solid6
+					// 		? 0.5
+					// 		: 0
+					// }
 				/>
 			</mesh>
 		</group>

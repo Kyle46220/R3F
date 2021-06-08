@@ -17,6 +17,7 @@ import { Controls, useControl, withControls } from 'react-three-gui';
 import { subscribe, useSnapshot, proxy } from 'valtio';
 import { Vector3 } from 'three';
 import store from './store';
+import StateViewer from './StateViewer';
 
 // const state = proxy({ current: null });
 
@@ -32,7 +33,7 @@ const Wrapper = styled.section`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	flex-direction: column;
+	flex-direction: row;
 	margin: 3em;
 `;
 
@@ -67,17 +68,27 @@ const updateShelfState = (snap) => {
 			Solid6: { hover: false, position: null, height: 300 },
 		},
 	};
+	const snapModels = snap.items.addedShelfModels;
+	const storeModels = store.items.addedShelfModels;
 	//i need to overwrite the add shelf items when the scale changes
 	// object.assign will add new ones.
 	// a filter will get rid of the old ones.
 	// based on scale.y, if needed creates more, gtes rid of ones that aren't there.
-	Array.from({ length: snap.transforms.scale.y }, (x, i) => {
-		//this loop adds a new state object item that is named with number
-		const newKey = `Shelf${i}`;
-		Object.assign(store.items, newShelf);
-		store.items.addedShelfModels[newKey] = store.items.Default;
-		delete store.items.addedShelfDefault;
-	});
+	if (snap.transforms.scale.y > Object.entries(snapModels).length) {
+		Array.from({ length: snap.transforms.scale.y }, (x, i) => {
+			//this loop adds a new state object item that is named with number
+
+			const newKey = `Shelf${i}`;
+			Object.assign(store.items, newShelf);
+			store.items.addedShelfModels[newKey] = store.items.default;
+			delete store.items.addedShelfDefault;
+		});
+	} else {
+		// chop off the last item
+		store.items.addedShelfModels = Object.fromEntries(
+			Object.entries(store.items.addedShelfModels).slice(-1)
+		);
+	}
 };
 
 const ShelfAdder = () => {
@@ -92,7 +103,6 @@ const ShelfAdder = () => {
 
 	return (
 		<>
-			{/* should this be iterating from an array or directly from state? could i use a listener subscriptsion? i.e wait for change, when changed, addShelf? */}
 			{Object.entries(snap.items.addedShelfModels).map((x, i) => {
 				return (
 					<AddShelfModel
@@ -103,15 +113,6 @@ const ShelfAdder = () => {
 				);
 			})}
 		</>
-		// {Array.from({ length: snap.transforms.scale.y }, (x, i) => {
-		// 	return (
-		// 		<AddShelfModel
-		// 			shelfNumber={i}
-		// 			key={`shelf${i}`}
-		// 			position-z={-295 * (i + 1)}
-		// 		/>
-		// 	);
-		// })}
 	);
 };
 
@@ -121,41 +122,43 @@ const DrawerFill = () => {
 
 	// a function that gets the drawers
 
-	const getDrawers = () => {};
+	const getDrawers = (object) => {
+		console.log(Object.entries(object));
+		Object.entries(object).map((item, i) => {
+			console.log(item[1].position);
+			if (item[1].position !== null || false) {
+				let position = item[1].position;
+
+				return (
+					<group ref={mesh} key={`drawer${i}`}>
+						<DrawerModel
+							//I think I can just put the scale from the constrols in here and it might work
+							rotation-x={-1.5}
+							position={[
+								position.x * snap.transforms.scale.x,
+								position.y,
+								position.z,
+								// position.z +
+								// 	-(ii + 1) * item[1].height, // the height here is to copy the transform that has be done to each shelf.
+							]}
+						/>
+					</group>
+				);
+			} else {
+				return null;
+			}
+		});
+	};
+
 	//the loop below is a mess and needs to be fixed. There is a much simpler way to do this.
 
 	// the positions are already set.
 	return (
 		<>
-			{Object.entries(snap.items).map((set) => {
-				console.log(Object.entries(snap.items));
-				return Object.entries(set[1]).map((row, ii) => {
-					return Object.entries(row[1]).map((item, i) => {
-						console.log(item);
-						if (item[1].position !== null || false) {
-							let position = item[1].position;
-
-							return (
-								<group ref={mesh} key={`drawer${ii}${i}`}>
-									<DrawerModel
-										//I think I can just put the scale from the constrols in here and it might work
-										rotation-x={-1.5}
-										position={[
-											position.x *
-												snap.transforms.scale.x,
-											position.y,
-											position.z,
-											// position.z +
-											// 	-(ii + 1) * item[1].height, // the height here is to copy the transform that has be done to each shelf.
-										]}
-									/>
-								</group>
-							);
-						} else {
-							return null;
-						}
-					});
-				});
+			{getDrawers(snap.items.presetModel.mainShelves)}
+			{Object.entries(snap.items.addedShelfModels).map((item) => {
+				console.log('returned item', item);
+				getDrawers(item[1]);
 			})}
 		</>
 	);
@@ -164,27 +167,24 @@ const DrawerFill = () => {
 export default () => {
 	return (
 		<Wrapper>
-			<h1 style={{ margin: '1rem' }}>
+			{/* <h1 style={{ margin: '1rem' }}>
 				Built with React-Three-Fiber and Zustand and Valtio with
 				functional components and hooks.
-			</h1>
-
+			</h1> */}
+			<StateViewer />
 			<Controls.Provider>
 				<MyCanvas camera={{ position: [700, 1000, 2500], far: 11000 }}>
 					<ambientLight />
 					<pointLight position={[10, 10, 10]} />
 					<Suspense fallback={null}>
-						{/* <Model onClick={(e) => handleClick(e)}></Model> */}
-
 						<Model />
 						<DrawerFill />
-						{/* <AddShelfModel></AddShelfModel> */}
 						<ShelfAdder />
 					</Suspense>
-					<Suspense fallback={null}></Suspense>
 
 					<ControlOrbit />
 				</MyCanvas>
+
 				<Controls />
 				{/* <Picker /> */}
 			</Controls.Provider>

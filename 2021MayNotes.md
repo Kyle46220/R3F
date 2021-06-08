@@ -204,4 +204,29 @@ ok so it's something to do with names. maybe it would work better if it were arr
 
 useEffect the last arg is the listener. when it changes use effect is fired.
 
-i think i need to make sort of state dispatch functions. then these are triggered with subscriptions and use effect. and these are what aters the state object when i bring new objects ont the scene.
+i think i need to make sort of state dispatch functions. then these are triggered with subscriptions and use effect. and these are what aters the state object when i bring new objects onto the scene.
+
+fixing the get drawers function
+
+OK so what if when you clicked a drawer you just created a drawer state object that was only new to itself and didn't matter what order it was in in a list?
+
+like tis just a cluster of state objects and they have their own position?
+
+So each object would need to have its own subscription to state changes from the controls. rather than doing render all shelves, render all drawers, all one adter the other as independen things.
+
+so for adding a shelf fro example I would need a function like "find topmost bit of geometry" and then this would need its own subscriptions to state changes.
+
+Like being more asynchronous abou it.
+
+This is the bit I always get to where i start again and get back to this problem.
+
+Or is everything based around one unit of bottom, cavity, left side? and then just some end caps?? Then I just have one component which can contain its own drawer, and then all that's needed is one state object for the position of each unit. All the maths would be here.
+
+THIS would be much simpler. What limitations does it put on the design? Would it still have the same problem of identifying state objects and 3D objects?
+
+Could objects be created with inbuilt subscribers in them? so when the controls are changed, the already rendered componets then update their npositions without having to re-render the whole thing from scratch. Hmm or maybe not. just reading from the state is kind of already like this. read from state happens on every re-render of the component, but maybe you would want to no re-render the whole thing, when you just want little objects in it to move around. IDK.
+
+Thinking atomistically
+How doe useREF come into it? if at all.
+
+I'll figure it out. I think I need a state object. I'l stay the course. I am making progress. time to sleep and let my brain figure it out.

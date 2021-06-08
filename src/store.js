@@ -4,10 +4,10 @@ const store = proxy({
 	current: null,
 	transforms: { scale: { x: 1, y: 1, z: 1 }, shelfQTY: 3 },
 	items: {
-		// default: {
-		// 	Solid11_1: { hover: false, position: null, height: 300 },
-		// 	Solid6: { hover: false, position: null, height: 300 },
-		// },
+		default: {
+			Solid11_1: { hover: false, position: null, height: 300 },
+			Solid6: { hover: false, position: null, height: 300 },
+		},
 		presetModel: {
 			mainShelves: {
 				Solid11_1: { hover: false, position: null, height: 300 },
@@ -23,18 +23,18 @@ const store = proxy({
 			},
 		},
 		addedShelfModels: {
-			shelf0: {
-				Solid11_1: { hover: false, position: null, height: 300 },
-				Solid6: { hover: false, position: null, height: 300 },
-			},
-			shelf1: {
-				Solid11_1: { hover: false, position: null, height: 300 },
-				Solid6: { hover: false, position: null, height: 300 },
-			},
-			shelf2: {
-				Solid11_1: { hover: false, position: null, height: 300 },
-				Solid6: { hover: false, position: null, height: 300 },
-			},
+			// shelf0: {
+			// 	Solid11_1: { hover: false, position: null, height: 300 },
+			// 	Solid6: { hover: false, position: null, height: 300 },
+			// },
+			// shelf1: {
+			// 	Solid11_1: { hover: false, position: null, height: 300 },
+			// 	Solid6: { hover: false, position: null, height: 300 },
+			// },
+			// shelf2: {
+			// 	Solid11_1: { hover: false, position: null, height: 300 },
+			// 	Solid6: { hover: false, position: null, height: 300 },
+			// },
 		},
 	},
 });
