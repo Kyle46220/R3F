@@ -173,9 +173,6 @@ const SectionFiller = () => {
 		max = Math.floor(max);
 		return Math.floor(Math.random() * (max - min) + min);
 	};
-	useEffect(() => {
-		//something in here that calculates the position maths.
-	}, [snap.transforms.scale]);
 
 	return (
 		<group
@@ -189,18 +186,10 @@ const SectionFiller = () => {
 		>
 			{Array.from({ length: scale.y }, (x, i) => {
 				return (
-					<group
-						position-y={scale.y < 2 ? 500 * i : 300 * i * scale.y}
-					>
+					<group position-y={500 * i}>
 						{Array.from({ length: scale.x }, (x, i) => {
 							return (
-								<group
-									position-x={
-										scale.x < 2
-											? 500 * i
-											: 100 * i * scale.x
-									}
-								>
+								<group position-x={500 * i}>
 									<CabSection />;
 								</group>
 							);

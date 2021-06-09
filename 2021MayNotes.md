@@ -241,4 +241,14 @@ next is a thing called instanced geometry and colours, which I think will be ver
 
 https://codesandbox.io/s/r3f-instanced-colors-8fo01
 
-So I gott make sure ach event handles is specific to the object inside a react component.
+So I gotta make sure ach event handles is specific to the object inside a react component.
+
+So a few things got done today. Really starting to get the hang of the declarative stuff.
+
+Happy with the way the drawers are loading. and resizing is being done.
+
+I think state will handle the style options (grid, gradient etc) coming from the user input, and the the impoerative maths that is done to get the positions from these will be inside the code. possible inside useEffect. the ternary operators i am trying to unse to calculate the positions at the moment I feel like are the right IDea, but I don't think I can do it all inside the property definition. its seems to not change based on the control inputs which is weird. has to be its position in ther ender cyle. I thin k if use effetc calcualtes this matsh every time there is a input change this will be good.
+
+Then the next thing willbe the hover box to get the from inputs it. I think the DOM import from R3F is what i'll end up using here.
+
+Anyways. Off to bed!
