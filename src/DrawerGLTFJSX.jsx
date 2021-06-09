@@ -38,8 +38,8 @@ export default function DrawerModel(props) {
 				// position={(0, 0, 0)}
 			>
 				<meshStandardMaterial
-					transparent={true}
-					opacity={0.5}
+					// transparent={true}
+					// opacity={0.5}
 					attach="material"
 					color="teal"
 				/>
@@ -51,16 +51,16 @@ export default function DrawerModel(props) {
 				// position-x={posX * 1000}
 			>
 				<meshStandardMaterial
-					transparent={true}
-					opacity={0.5}
+					// transparent={true}
+					// opacity={0.5}
 					attach="material"
 					color="teal"
 				/>
 			</mesh>
 			<mesh geometry={nodes.Solid3.geometry}>
 				<meshStandardMaterial
-					transparent={true}
-					opacity={0.5}
+					// transparent={false}
+					// opacity={0.5}
 					attach="material"
 					color="teal"
 				/>
@@ -70,8 +70,8 @@ export default function DrawerModel(props) {
 				geometry={nodes.Solid4.geometry}
 			>
 				<meshStandardMaterial
-					transparent={true}
-					opacity={0.5}
+					// transparent={true}
+					// opacity={0.5}
 					attach="material"
 					color="teal"
 				/>
@@ -81,8 +81,8 @@ export default function DrawerModel(props) {
 				geometry={nodes.Solid5.geometry}
 			>
 				<meshStandardMaterial
-					transparent={true}
-					opacity={0.5}
+					// transparent={true}
+					// opacity={0.5}
 					attach="material"
 					color="teal"
 				/>
@@ -92,8 +92,8 @@ export default function DrawerModel(props) {
 				geometry={nodes.Solid6.geometry}
 			>
 				<meshStandardMaterial
-					transparent={true}
-					opacity={0.5}
+					// transparent={true}
+					// opacity={0.5}
 					attach="material"
 					color="teal"
 				/>

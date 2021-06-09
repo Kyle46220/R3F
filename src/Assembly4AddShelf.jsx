@@ -13,38 +13,37 @@ export default function AddShelfModel(props) {
 	const shelfNumber = props.shelfNumber;
 	const { nodes, materials } = useLoader(GLTFLoader, '/Assembly4.gltf');
 	const snap = useSnapshot(store);
+	const group = useRef();
+	const cavity = useRef();
+	const cavity6 = useRef();
 
 	const handlePointerOver = (e) => {
 		e.stopPropagation();
-		const name = e.object.name;
-		// can i use a ref instead of the shelf number? OR MAYbeE ITS THE CURRENT??
 
-		return (store.items.addedShelfModels[`shelf${shelfNumber}`][
-			name
-		].hover = true);
+		// can i use a ref instead of the shelf number? OR MAYbeE ITS THE CURRENT??
+		cavity.current.visible = true;
+		cavity6.current.visible = true;
+		// cavity.current.material.color.setHex(0x2f33dd);
 	};
 
 	const handlePointerOut = (e) => {
 		e.stopPropagation();
-		const name = e.object.name;
 
-		return (store.items.addedShelfModels[`shelf${shelfNumber}`][
-			name
-		].hover = false);
+		cavity.current.visible = false;
+		cavity6.current.visible = false;
 	};
+
 	const handleClick = (e) => {
 		//this function will put the clicked thing into the store object. in its right category
 		e.stopPropagation();
 		const name = e.object.name; // here is where i am using the name which they have in common to shoose where to save the position
-
+		console.log(cavity.current);
 		const center = new THREE.Vector3();
 
 		return (store.items.addedShelfModels[`shelf${shelfNumber}`][
 			name
 		].position = e.object.geometry.boundingBox.getCenter(center));
 	};
-
-	const group = useRef();
 
 	return (
 		<group
@@ -63,24 +62,16 @@ export default function AddShelfModel(props) {
 				geometry={nodes.Solid52.geometry}
 			/>
 			<mesh
+				ref={cavity}
 				name={nodes.Solid11_1.name}
 				material={nodes.Solid11_1.material}
 				geometry={nodes.Solid11_1.geometry}
-				// onPointerOver={(e) => handlePointerOver(e)}
-				// onPointerOut={(e) => handlePointerOut(e)}
+				onPointerOver={(e) => handlePointerOver(e)}
+				onPointerOut={(e) => handlePointerOut(e)}
 				onClick={(e) => handleClick(e)}
+				visible={false}
 			>
-				<meshStandardMaterial
-					attach="material"
-					color={'blue'}
-					transparent={true}
-					// opacity={
-					// 	snap.items.addedShelfModels[`shelf${shelfNumber}`]
-					// 		.Solid11_1
-					// 		? 0.5
-					// 		: 0
-					// }
-				/>
+				<meshStandardMaterial attach="material" color={'#db76d1'} />
 			</mesh>
 			<mesh
 				name={nodes.Solid12.name}
@@ -101,24 +92,16 @@ export default function AddShelfModel(props) {
 			/>
 
 			<mesh
+				ref={cavity6}
 				name={nodes.Solid6.name}
+				visible={false}
 				material={nodes.Solid6.material}
 				geometry={nodes.Solid6.geometry}
-				// onPointerOver={(e) => handlePointerOver(e)}
-				// onPointerOut={(e) => handlePointerOut(e)}
+				onPointerOver={(e) => handlePointerOver(e)}
+				onPointerOut={(e) => handlePointerOut(e)}
 				onClick={(e) => handleClick(e)}
 			>
-				<meshStandardMaterial
-					attach="material"
-					color={'blue'}
-					transparent={true}
-					// opacity={
-					// 	snap.items.addedShelfModels[`shelf${shelfNumber}`]
-					// 		.Solid6
-					// 		? 0.5
-					// 		: 0
-					// }
-				/>
+				<meshStandardMaterial attach="material" color={'#db76d1'} />
 			</mesh>
 		</group>
 	);

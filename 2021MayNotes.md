@@ -230,3 +230,15 @@ Thinking atomistically
 How doe useREF come into it? if at all.
 
 I'll figure it out. I think I need a state object. I'l stay the course. I am making progress. time to sleep and let my brain figure it out.
+
+so i was thinking when i was asleep that the ref.current goes where i've been using the name to access the state object. Also I thikn I will just be able to output the R#F state object to get what i need as an output for the whole configuration. So the whole valtio state object doesn't need to contain all the data.
+
+So i could also just use regular use State hooks for the hover click events? this had the problem before of making them all one. This would be a perfect problem to put in a code sandbox. maybe its all about them having different meshes?
+
+is there a way to not have to refer to the state object with a unique identifier. YEP! with use ref. Thanks dream. figured this out while i was asleep this morning. hahahah.
+
+next is a thing called instanced geometry and colours, which I think will be very useful fro perfotmance when I get to it.
+
+https://codesandbox.io/s/r3f-instanced-colors-8fo01
+
+So I gott make sure ach event handles is specific to the object inside a react component.

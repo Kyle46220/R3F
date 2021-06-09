@@ -18,6 +18,7 @@ import { subscribe, useSnapshot, proxy } from 'valtio';
 import { Vector3 } from 'three';
 import store from './store';
 import StateViewer from './StateViewer';
+import CabSection from './cabSection';
 
 // const state = proxy({ current: null });
 
@@ -50,17 +51,6 @@ const ControlOrbit = () => {
 	return <orbitControls args={[camera, gl.domElement]} ref={orbitRef} />;
 };
 
-// const widthScale = useControl('Width Scale', {
-// 	type: 'number',
-// 	value: 1,
-// 	state: [snap.transforms.scale.x, (e) => (store.transforms.scale.x = e)],
-// });
-
-// const heightScale = useControl('Height Scale', {
-// 	type: 'number',
-// 	value: 1,
-// 	state: [snap.transforms.scale.y, (e) => (store.transforms.scale.y = e)],
-// });
 const updateShelfState = (snap) => {
 	const newShelf = {
 		addedShelfDefault: {
@@ -116,6 +106,77 @@ const ShelfAdder = () => {
 	);
 };
 
+function Box(props) {
+	const snap = useSnapshot(store);
+	// This reference will give us direct access to the mesh
+	const mesh = useRef();
+	// Set up state for the hovered and active state
+	const [hovered, setHover] = useState(false);
+	const [active, setActive] = useState(false);
+	// Subscribe this component to the render-loop, rotate the mesh every frame
+	// useFrame((state, delta) => (mesh.current.rotation.x += 0.01));
+
+	const widthScale = useControl('Width Scale', {
+		type: 'number',
+		value: 1,
+		state: [snap.transforms.scale.x, (e) => (store.transforms.scale.x = e)],
+	});
+	const heightScale = useControl('Height Scale', {
+		type: 'number',
+		value: 1,
+		state: [snap.transforms.scale.y, (e) => (store.transforms.scale.y = e)],
+	});
+	const depthScale = useControl('Depth Scale', {
+		type: 'number',
+		value: 1,
+		state: [snap.transforms.scale.z, (e) => (store.transforms.scale.z = e)],
+	});
+	// Return view, these are regular three.js elements expressed in JSX
+	return (
+		<mesh
+			{...props}
+			ref={mesh}
+			scale={[widthScale, heightScale, depthScale]}
+			onClick={(event) => setActive(!active)}
+			onPointerOver={(event) => setHover(true)}
+			onPointerOut={(event) => setHover(false)}
+			visible={false}
+		>
+			<boxGeometry args={[1000, 1000, 1000]} />
+			<meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
+		</mesh>
+	);
+}
+const SectionFiller = () => {
+	const snap = useSnapshot(store);
+	const group = useRef();
+	const scale = snap.transforms.scale;
+
+	const rand = (min, max) => {
+		min = Math.ceil(min);
+		max = Math.floor(max);
+		return Math.floor(Math.random() * (max - min) + min);
+	};
+
+	return (
+		<group ref={group}>
+			{Array.from({ length: scale.y }, (x, i) => {
+				return (
+					<group position-y={500 * i}>
+						{Array.from({ length: scale.x }, (x, i) => {
+							return (
+								<group position-x={500 * i}>
+									<CabSection />;
+								</group>
+							);
+						})}
+						;
+					</group>
+				);
+			})}
+		</group>
+	);
+};
 const DrawerFill = () => {
 	const snap = useSnapshot(store);
 	const mesh = useRef();
@@ -177,9 +238,12 @@ export default () => {
 					<ambientLight />
 					<pointLight position={[10, 10, 10]} />
 					<Suspense fallback={null}>
-						<Model />
-						<DrawerFill />
-						<ShelfAdder />
+						{/* <Model /> */}
+						{/* <DrawerFill />
+						<ShelfAdder /> */}
+						<Box />
+
+						<SectionFiller />
 					</Suspense>
 
 					<ControlOrbit />
