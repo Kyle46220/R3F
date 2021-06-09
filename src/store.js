@@ -2,7 +2,7 @@ import { proxy } from 'valtio';
 
 const store = proxy({
 	current: null,
-	transforms: { scale: { x: 1, y: 1, z: 1 }, shelfQTY: 3 },
+	transforms: { scale: { x: 1, y: 1, z: 1 }, shelfQTY: 3, widthDensity: 4 },
 	items: {
 		default: {
 			Solid11_1: { hover: false, position: null, height: 300 },

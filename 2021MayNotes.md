@@ -252,3 +252,17 @@ I think state will handle the style options (grid, gradient etc) coming from the
 Then the next thing willbe the hover box to get the from inputs it. I think the DOM import from R3F is what i'll end up using here.
 
 Anyways. Off to bed!
+
+ok so back inside useEFFeCt trying to come up with some logci for the positions using only scale and density.
+
+there needs to be some arbitrary number. Width etc from the box?
+
+width = 1000, scale = 1, density =2, sectionwidth = 500
+width= 1000, scale =1 density = 3, section widtrh = 333
+
+width = 1000, scale = 2, density = 3, secion width = 666
+
+width/density x scale x iterator
+
+if this result gets lower or higher than a certain value, change the density.
+sort of got this on the low end, but not the high end. ,aybe will hvae to not use the Gui slider cos can't find the ghost control thing where it slides based on other inputs.

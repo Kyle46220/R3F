@@ -19,6 +19,7 @@ import { Vector3 } from 'three';
 import store from './store';
 import StateViewer from './StateViewer';
 import CabSection from './cabSection';
+import Slider from './Slider';
 
 // const state = proxy({ current: null });
 
@@ -89,6 +90,9 @@ function Picker() {
 				width: '100px',
 				height: '100px',
 				backgroundColor: 'fuchsia',
+				position: 'fixed',
+				top: '0px',
+				margin: 'auto',
 			}}
 		>
 			<h1>{JSON.stringify(snap.current)}</h1>
@@ -157,7 +161,7 @@ function Box(props) {
 			onPointerOut={(event) => setHover(false)}
 			visible={false}
 		>
-			<boxGeometry args={[1000, 1000, 1000]} />
+			<boxGeometry args={[1000, 1000, 400]} />
 			<meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
 		</mesh>
 	);
@@ -167,6 +171,16 @@ const SectionFiller = () => {
 	const snap = useSnapshot(store);
 	const group = useRef();
 	const scale = snap.transforms.scale;
+	const density = useControl('density Scale', {
+		type: 'custom',
+		value: 1,
+		scrub: true,
+		comsponent: Slider,
+		state: [
+			snap.transforms.widthDensity,
+			(e) => (store.transforms.widthDensity = e),
+		],
+	});
 
 	const rand = (min, max) => {
 		min = Math.ceil(min);
@@ -175,7 +189,23 @@ const SectionFiller = () => {
 	};
 	useEffect(() => {
 		//something in here that calculates the position maths.
-	}, [snap.transforms.scale]);
+		const adjustDensity = () => {
+			return (store.transforms.widthDensity =
+				(1000 / density) * scale.x < 500
+					? --store.transforms.widthDensity
+					: store.transforms.widthDensity);
+		};
+		// adjustDensity();
+		// const density = store.transfroms.widthDensity;
+		// const adjustDensity =
+		// 	(1000 / snap.transforms.widthDensity) * scale.x < 300
+		// 		? --store.transforms.widthDensity
+		// 		: store.transforms.widthDensity;
+		console.log((1000 / density) * scale.x);
+
+		store.transforms.widthDensity = adjustDensity();
+		// store.current = (1000 / density) * scale.x;
+	}, [snap.transforms]);
 
 	return (
 		<group
@@ -187,19 +217,15 @@ const SectionFiller = () => {
 				console.log(store.current)
 			)}
 		>
-			{Array.from({ length: scale.y }, (x, i) => {
+			{Array.from({ length: scale.y }, (x, j) => {
+				//Height
 				return (
-					<group
-						position-y={scale.y < 2 ? 500 * i : 300 * i * scale.y}
-					>
-						{Array.from({ length: scale.x }, (x, i) => {
+					<group position-y={j * 300}>
+						{Array.from({ length: density }, (x, i) => {
+							//Width
 							return (
 								<group
-									position-x={
-										scale.x < 2
-											? 500 * i
-											: 100 * i * scale.x
-									}
+									position-x={(1000 / density) * scale.x * i}
 								>
 									<CabSection />;
 								</group>
@@ -285,7 +311,16 @@ export default () => {
 				</MyCanvas>
 
 				<Controls />
+				<Slider
+					value={store.transforms.widthDensity}
+					min={0}
+					max={6}
+					onChange={(e) =>
+						(store.transforms.widthDensity = e.currentTarget.value)
+					}
+				/>
 			</Controls.Provider>
+
 			<Picker />
 			<div style={{ display: 'flex' }}></div>
 		</Wrapper>
