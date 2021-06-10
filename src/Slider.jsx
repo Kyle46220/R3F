@@ -23,16 +23,30 @@ import React from 'react';
 // import { connect } from "react-redux";
 
 // const THREE = require('three');
+// this version works with the zustore componenet
+// const Slider = ({ value, defaultValue, min, max, step, onChange }) => (
+// 	<input
+// 		type="range"
+// 		defaultValue={defaultValue}
+// 		min={min}
+// 		max={max}
+// 		value={value}
+// 		step={step}
+// 		onChange={onChange}
+// 	/>
+// );
 
-const Slider = ({ value, defaultValue, min, max, step, onChange }) => (
+//this one is for the valtio/gui version
+
+const Slider = ({ value, defaultValue, min, max, step, setValue }) => (
 	<input
 		type="range"
 		defaultValue={defaultValue}
-		min={min}
-		max={max}
-		value={value}
+		min={1}
+		max={8}
+		// value={value}
 		step={step}
-		onChange={onChange}
+		onChange={(e) => setValue(e.currentTarget.value)}
 	/>
 );
 

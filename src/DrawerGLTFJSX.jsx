@@ -8,6 +8,7 @@ import { useLoader } from 'react-three-fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { useStore } from './zusStore';
 import { Controls, useControl } from 'react-three-gui';
+import { MathUtils } from 'three';
 
 export default function DrawerModel(props) {
 	// const rotationX = useControl('Rotation X', { type: 'number' });
@@ -28,7 +29,7 @@ export default function DrawerModel(props) {
 			position={props.position}
 			visible={!clicked}
 			onClick={(e) => setClicked(!clicked)}
-			// rotation-x={rotationX}
+			rotation-x={MathUtils.degToRad(-90)}
 			// position-x={posX * 100}
 			// scale-x={scaleX}
 		>

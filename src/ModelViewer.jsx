@@ -20,6 +20,7 @@ import store from './store';
 import StateViewer from './StateViewer';
 import CabSection from './cabSection';
 import Slider from './Slider';
+import Panel from './HorizontalPanels';
 
 // const state = proxy({ current: null });
 
@@ -139,11 +140,15 @@ function Box(props) {
 		type: 'number',
 		value: 1,
 		state: [snap.transforms.scale.x, (e) => (store.transforms.scale.x = e)],
+		min: 1,
+		max: 6,
 	});
 	const heightScale = useControl('Height Scale', {
 		type: 'number',
 		value: 1,
 		state: [snap.transforms.scale.y, (e) => (store.transforms.scale.y = e)],
+		min: 1,
+		max: 6,
 	});
 	const depthScale = useControl('Depth Scale', {
 		type: 'number',
@@ -161,7 +166,7 @@ function Box(props) {
 			onPointerOut={(event) => setHover(false)}
 			visible={false}
 		>
-			<boxGeometry args={[1000, 1000, 400]} />
+			<boxGeometry args={[1000, 1000, 1000]} />
 			<meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
 		</mesh>
 	);
@@ -170,16 +175,24 @@ const SectionFiller = () => {
 	const [hovered, setHovered] = useState(null);
 	const snap = useSnapshot(store);
 	const group = useRef();
+	const panel = useRef();
 	const scale = snap.transforms.scale;
 	const density = useControl('density Scale', {
 		type: 'custom',
 		value: 1,
-		scrub: true,
-		comsponent: Slider,
+		min: store.transforms.densityCalc(1000),
+		max: store.transforms.densityCalc(500),
+
+		component: Slider,
 		state: [
 			snap.transforms.widthDensity,
 			(e) => (store.transforms.widthDensity = e),
 		],
+	});
+
+	useEffect(() => {
+		// console.log(panel.current.parent);
+		//I need to make an imperative calc here or in store for the positions doing like getCenter etc.
 	});
 
 	const rand = (min, max) => {
@@ -187,29 +200,11 @@ const SectionFiller = () => {
 		max = Math.floor(max);
 		return Math.floor(Math.random() * (max - min) + min);
 	};
-	useEffect(() => {
-		//something in here that calculates the position maths.
-		const adjustDensity = () => {
-			return (store.transforms.widthDensity =
-				(1000 / density) * scale.x < 500
-					? --store.transforms.widthDensity
-					: store.transforms.widthDensity);
-		};
-		// adjustDensity();
-		// const density = store.transfroms.widthDensity;
-		// const adjustDensity =
-		// 	(1000 / snap.transforms.widthDensity) * scale.x < 300
-		// 		? --store.transforms.widthDensity
-		// 		: store.transforms.widthDensity;
-		console.log((1000 / density) * scale.x);
-
-		store.transforms.widthDensity = adjustDensity();
-		// store.current = (1000 / density) * scale.x;
-	}, [snap.transforms]);
 
 	return (
 		<group
 			ref={group}
+			name={'wholeShelf'}
 			onPointerOver={(e) => (e.stopPropagation(), setHovered(e.object))}
 			onPointerDown={(e) => (
 				e.stopPropagation(),
@@ -220,69 +215,42 @@ const SectionFiller = () => {
 			{Array.from({ length: scale.y }, (x, j) => {
 				//Height
 				return (
-					<group position-y={j * 300}>
-						{Array.from({ length: density }, (x, i) => {
-							//Width
-							return (
-								<group
-									position-x={(1000 / density) * scale.x * i}
-								>
-									<CabSection />;
-								</group>
-							);
-						})}
-						;
-					</group>
+					<>
+						<group position-y={j * 400} name={'verticalRow'}>
+							{Array.from(
+								{ length: snap.transforms.pos },
+								(x, i) => {
+									//Width
+									return (
+										<group
+											position-x={
+												(1000 / snap.transforms.pos) *
+												scale.x *
+												i
+											}
+											name={'horizontalColumn'}
+										>
+											<CabSection />;
+										</group>
+									);
+								}
+							)}
+							<group
+								ref={panel}
+								scale-x={
+									(snap.transforms.scale.x * 1000) / 1200
+								}
+								position-x={
+									(snap.transforms.scale.x * 1000) / 2 - 600
+								}
+							>
+								<Panel />
+							</group>
+						</group>
+					</>
 				);
 			})}
 		</group>
-	);
-};
-const DrawerFill = () => {
-	const snap = useSnapshot(store);
-	const mesh = useRef();
-
-	// a function that gets the drawers
-
-	const getDrawers = (object) => {
-		console.log(Object.entries(object));
-		Object.entries(object).map((item, i) => {
-			console.log(item[1].position);
-			if (item[1].position !== null || false) {
-				let position = item[1].position;
-
-				return (
-					<group ref={mesh} key={`drawer${i}`}>
-						<DrawerModel
-							//I think I can just put the scale from the constrols in here and it might work
-							rotation-x={-1.5}
-							position={[
-								position.x * snap.transforms.scale.x,
-								position.y,
-								position.z,
-								// position.z +
-								// 	-(ii + 1) * item[1].height, // the height here is to copy the transform that has be done to each shelf.
-							]}
-						/>
-					</group>
-				);
-			} else {
-				return null;
-			}
-		});
-	};
-
-	//the loop below is a mess and needs to be fixed. There is a much simpler way to do this.
-
-	// the positions are already set.
-	return (
-		<>
-			{getDrawers(snap.items.presetModel.mainShelves)}
-			{Object.entries(snap.items.addedShelfModels).map((item) => {
-				console.log('returned item', item);
-				getDrawers(item[1]);
-			})}
-		</>
 	);
 };
 
@@ -305,20 +273,21 @@ export default () => {
 						<Box />
 
 						<SectionFiller />
+						{/* <Panel /> */}
 					</Suspense>
 
 					<ControlOrbit />
 				</MyCanvas>
 
 				<Controls />
-				<Slider
-					value={store.transforms.widthDensity}
+				{/* <Slider
+					// value={store.transforms.widthDensity}
 					min={0}
 					max={6}
 					onChange={(e) =>
 						(store.transforms.widthDensity = e.currentTarget.value)
 					}
-				/>
+				/> */}
 			</Controls.Provider>
 
 			<Picker />

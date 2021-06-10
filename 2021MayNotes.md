@@ -266,3 +266,24 @@ width/density x scale x iterator
 
 if this result gets lower or higher than a certain value, change the density.
 sort of got this on the low end, but not the high end. ,aybe will hvae to not use the Gui slider cos can't find the ghost control thing where it slides based on other inputs.
+
+Okay so if i can use functions in objects, can I use them in store object? I think so.
+
+maybe that's where I can put the logic for the width pos calc. it works!!
+
+so for anything that i don't want to have to calculate a million times in the main code, i can just write a getter function for in the store object. This is a large boon. easier thatn writing functions that i then have to access between components. is there something like this written into valtio?
+
+so subscribers actually EXECUTE when something is published. I'm sp use tp the render loop, that i forget not everything is listening already.
+maybe it would be easier to change the max and min of the sliders rather than change the actual value for stopping the bad input. yes. the density slider has no numeric value that is relvant so this will just change.
+
+its useful to know that i can pass arguments into actions in the state object.
+
+So ive got the problem now Of lining things up. I might need an array of positions after. Just scaling things doesn't work without a common refernce point, which might be me not understanding transform matrixes or local and work transfroms.
+
+This is important - scaling is confused by the initial model dimensions. 1200 wide. Sheves are probably 300 or something tall.
+
+Also a solve for the density width problem, could be that, in liue of making the slider reactive, just have 2 increment, decrement buttons.
+
+can i get center of the cavity.
+
+position formula = (scale*percentage of width * 1000)/2 - 1200\* percentage of width

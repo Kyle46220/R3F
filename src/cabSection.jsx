@@ -1,12 +1,13 @@
 import * as THREE from 'three';
 import React, { useRef, useState, useEffect, forwardRef } from 'react';
-import { useLoader } from '@react-three/fiber';
+import { useLoader, useFrame } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { Controls, useControl } from 'react-three-gui';
 import { useSnapshot, proxy, subscribe } from 'valtio';
 import { useStore } from './zusStore';
 import DrawerModel from './DrawerGLTFJSX';
 import store from './store';
+import { MathUtils } from 'three';
 // const ForwardDrawer = forwardRef((props, ref) => <DrawerModel ref={ref} />);
 
 export default function CabSection() {
@@ -35,15 +36,35 @@ export default function CabSection() {
 		setActive(!active);
 		console.log(group.current);
 	};
+	useFrame(() => {
+		group.current.updateMatrixWorld();
+	});
 
 	return (
-		<group ref={group}>
+		<group ref={group} rotation-x={MathUtils.degToRad(90)}>
 			<mesh
+				scale-x={
+					(snap.transforms.scale.x * 1000) /
+					1200 /
+					snap.transforms.widthDensity
+				}
+				position-x={
+					snap.transforms.scale.x *
+						snap.transforms.pos *
+						0.1 *
+						1000 *
+						0.5 -
+					snap.transforms.scale.x *
+						snap.transforms.pos *
+						0.1 *
+						1200 *
+						0.5
+				}
 				name={nodes.Solid33.name}
 				material={nodes.Solid33.material}
 				geometry={nodes.Solid33.geometry}
-				onPointerOver={(e) => handlePointerOver(e)}
-				onPointerOut={(e) => handlePointerOut(e)}
+				// onPointerOver={(e) => handlePointerOver(e)}
+				// onPointerOut={(e) => handlePointerOut(e)}
 				onClick={(e) => handleClick(e)}
 				visible={true}
 			>
@@ -51,7 +72,7 @@ export default function CabSection() {
 					attach="material"
 					color={'#db76d1'}
 					transparent={true}
-					opacity={0.25}
+					opacity={0.5}
 				/>
 			</mesh>
 			<mesh
