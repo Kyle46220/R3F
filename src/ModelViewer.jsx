@@ -21,6 +21,7 @@ import StateViewer from './StateViewer';
 import CabSection from './cabSection';
 import Slider from './Slider';
 import Panel from './HorizontalPanels';
+import EndSection from './EndSection';
 
 // const state = proxy({ current: null });
 
@@ -94,9 +95,10 @@ function Picker() {
 				position: 'fixed',
 				top: '0px',
 				margin: 'auto',
+				overflowY: 'wrap',
 			}}
 		>
-			<h1>{JSON.stringify(snap.current)}</h1>
+			{JSON.stringify(snap.current)}
 		</div>
 	);
 }
@@ -177,22 +179,32 @@ const SectionFiller = () => {
 	const group = useRef();
 	const panel = useRef();
 	const scale = snap.transforms.scale;
-	const density = useControl('density Scale', {
-		type: 'custom',
-		value: 1,
-		min: store.transforms.densityCalc(1000),
-		max: store.transforms.densityCalc(500),
+	// const density = useControl('density Scale', {
+	// 	type: 'custom',
+	// 	value: 1,
+	// 	min: store.transforms.densityCalc(1000),
+	// 	max: store.transforms.densityCalc(500),
 
-		component: Slider,
-		state: [
-			snap.transforms.widthDensity,
-			(e) => (store.transforms.widthDensity = e),
-		],
+	// 	component: Slider,
+	// 	state: [
+	// 		snap.transforms.widthDensity,
+	// 		(e) => (store.transforms.widthDensity = e),
+	// 	],
+	// });
+	const densityUP = useControl('More Shelves', {
+		type: 'button',
+		onClick: () => ++store.transforms.widthDensity,
+	});
+	const densityDown = useControl('Less Shelves', {
+		type: 'button',
+
+		onClick: () => --store.transforms.widthDensity,
 	});
 
 	useEffect(() => {
 		// console.log(panel.current.parent);
 		//I need to make an imperative calc here or in store for the positions doing like getCenter etc.
+		//update each shelf row pos after render but without a re-render - try valtio subscribe
 	});
 
 	const rand = (min, max) => {
@@ -212,11 +224,18 @@ const SectionFiller = () => {
 				console.log(store.current)
 			)}
 		>
+			<group
+				position-y={300 * Math.floor(scale.y)}
+				scale-x={(snap.transforms.scale.x * 1000) / 1200}
+				position-x={(snap.transforms.scale.x * 1000) / 2 - 600}
+			>
+				<Panel />
+			</group>
 			{Array.from({ length: scale.y }, (x, j) => {
 				//Height
 				return (
 					<>
-						<group position-y={j * 400} name={'verticalRow'}>
+						<group position-y={j * 300} name={'verticalRow'}>
 							{Array.from(
 								{ length: snap.transforms.pos },
 								(x, i) => {
@@ -246,6 +265,9 @@ const SectionFiller = () => {
 							>
 								<Panel />
 							</group>
+							<group position-x={scale.x * 1000 - 1200}>
+								<EndSection />
+							</group>
 						</group>
 					</>
 				);
@@ -263,7 +285,7 @@ export default () => {
 			</h1> */}
 			<StateViewer />
 			<Controls.Provider>
-				<MyCanvas camera={{ position: [700, 1000, 2500], far: 11000 }}>
+				<MyCanvas camera={{ position: [2000, 2000, 2500], far: 11000 }}>
 					<ambientLight />
 					<pointLight position={[10, 10, 10]} />
 					<Suspense fallback={null}>

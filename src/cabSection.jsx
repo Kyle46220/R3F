@@ -17,6 +17,7 @@ export default function CabSection() {
 	const center = {};
 	const [active, setActive] = useState(false);
 	const snap = useSnapshot(store);
+	const scale = snap.transforms.scale;
 	function getCenter(e) {
 		console.log(e);
 		console.log(drawer.current);
@@ -39,27 +40,40 @@ export default function CabSection() {
 	useFrame(() => {
 		group.current.updateMatrixWorld();
 	});
+	console.log(snap.modelFactors.sectionScaleX());
 
 	return (
 		<group ref={group} rotation-x={MathUtils.degToRad(90)}>
 			<mesh
+				// scale-x={
+				// 	snap.transforms.scale.x * snap.transforms.widthDensity * 0.1
+				// }
+				// position-x={
+				// 	snap.transforms.scale.x *
+				// 		snap.transforms.pos *
+				// 		0.1 *
+				// 		1000 *
+				// 		0.5 -
+				// 	snap.transforms.scale.x *
+				// 		snap.transforms.pos *
+				// 		0.1 *
+				// 		1200 *
+				// 		0.5
+				// }
 				scale-x={
-					(snap.transforms.scale.x * 1000) /
-					1200 /
-					snap.transforms.widthDensity
+					(snap.modelFactors.width * scale.x) /
+					snap.transforms.widthDensity /
+					(snap.modelFactors.width / 2)
 				}
 				position-x={
-					snap.transforms.scale.x *
-						snap.transforms.pos *
-						0.1 *
-						1000 *
-						0.5 -
-					snap.transforms.scale.x *
-						snap.transforms.pos *
-						0.1 *
-						1200 *
-						0.5
+					((1200 * scale.x) /
+						snap.transforms.widthDensity /
+						600 /
+						2) *
+						snap.modelFactors.width -
+					snap.modelFactors.width / 2
 				}
+				// scale-x={snap.modelFactors.sectionScaleX()}
 				name={nodes.Solid33.name}
 				material={nodes.Solid33.material}
 				geometry={nodes.Solid33.geometry}

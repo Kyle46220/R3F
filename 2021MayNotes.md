@@ -287,3 +287,38 @@ Also a solve for the density width problem, could be that, in liue of making the
 can i get center of the cavity.
 
 position formula = (scale*percentage of width * 1000)/2 - 1200\* percentage of width
+
+i need to find a way to position objects from other objects maybe. OR maybe not. Onve i've got the maths worked out, it should be pretty easy to put in formulas. there's gotta be some more methods out ther though.
+
+scale and position affect each other. beause of how each piece is positioned at not 0,0,0,
+
+I think the position doens't work on mmy own components - its a nonrmal prop there, whereas on r3f base componenets like mesh, group etc, its edited the three.js object.
+
+at the end i should be able to calculate price by calculateing the volume of all the objects in the scene.
+
+{scale.x \* 1000 - 1200} - this is the basic formula except you diivdide things by pecetnages of width and of 1200.
+\
+
+so 10 divisions at 6m is the right scale for the hover box
+
+how much bigger does it need to be for 9 divisions?
+
+mergeing and adding geometry in three.js
+
+https://stackoverflow.com/questions/8322759/three-js-bind-two-shapes-together-as-one/8328984
+
+property binding - think this is going to be similar to a ref idea.
+
+https://threejs.org/docs/?q=bind#api/en/animation/PropertyBinding
+
+This looks epic https://buerli.io/#react
+
+So loggina function without the brackets will return the code of the function, loggin with the bracket runs the code, and returns the return.
+
+so where I'm at is trying to get the scaling consistent. I've writting some functions in the store, but these need fixing. They're not giving the right results at the moment. I suspect its just a regular maths mistake.
+
+Ij think there's also a mistake with the scaling of the horiontal shelf panels in model viewer VS the way its been scaled in cab section. Which is why there's an overlap. I would like to get both of these scaling functions to come from the same function in the store.
+
+But his is a great amount of progress! its all about these store scaling functions for positioning.
+
+Thinking of making this code reusable for other models - I wonder If I could write a more general function which has like a reference to the original model size, actually I think this is just regular scaling neverminds.

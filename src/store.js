@@ -2,14 +2,38 @@ import { proxy } from 'valtio';
 
 const store = proxy({
 	current: null,
+	modelFactors: {
+		width: 1200,
+		sectionWidth: () => {
+			const result =
+				store.modelFactors.width / store.transforms.widthDensity;
+			return result;
+		},
+		sectionScaleX: () => {
+			const result =
+				(store.modelFactors.width * store.transforms.scale.x) /
+				store.transforms.widthDensity /
+				store.modelFactors.sectionWidth();
+			return result;
+		},
+	},
 	transforms: {
 		scale: { x: 1, y: 1, z: 1 },
 		shelfQTY: 3,
+		shelfHeights: { 0: 195, 1: 295, 2: 395, 3: 495, 4: 595 },
+		randShelfHeight: () => {
+			const min = Math.ceil(0);
+			const max = Math.floor(
+				Object.entries(store.transforms.shelfHeights).length
+			);
+			const result = Math.floor(Math.random() * (max - min) + min);
+			console.log(result);
+		},
 		widthDensity: 4,
 		get pos() {
-			return (1000 / this.widthDensity) * this.scale.x < 500
+			return (1000 / this.widthDensity) * this.scale.x < 300
 				? --this.widthDensity
-				: (1000 / this.widthDensity) * this.scale.x > 800
+				: (1000 / this.widthDensity) * this.scale.x > 1000
 				? ++this.widthDensity
 				: this.widthDensity;
 		},
