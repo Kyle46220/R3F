@@ -226,8 +226,11 @@ const SectionFiller = () => {
 		>
 			<group
 				position-y={300 * Math.floor(scale.y)}
-				scale-x={(snap.transforms.scale.x * 1000) / 1200}
-				position-x={(snap.transforms.scale.x * 1000) / 2 - 600}
+				scale-x={snap.transforms.scale.x}
+				position-x={
+					(snap.transforms.scale.x * snap.modelFactors.width) / 2 -
+					snap.modelFactors.boxWidth
+				}
 			>
 				<Panel />
 			</group>
@@ -243,8 +246,9 @@ const SectionFiller = () => {
 									return (
 										<group
 											position-x={
-												(1000 / snap.transforms.pos) *
-												scale.x *
+												(snap.modelFactors.width /
+													snap.transforms.pos) *
+												snap.transforms.scale.x *
 												i
 											}
 											name={'horizontalColumn'}
@@ -256,16 +260,28 @@ const SectionFiller = () => {
 							)}
 							<group
 								ref={panel}
-								scale-x={
-									(snap.transforms.scale.x * 1000) / 1200
-								}
+								// scale-x={
+								// 	(snap.transforms.scale.x * 1000) / 1200
+								// }
+								scale-x={snap.transforms.scale.x}
+								// position-x={
+								// 	(snap.transforms.scale.x * 1000) / 2 - 600
+								// }
 								position-x={
-									(snap.transforms.scale.x * 1000) / 2 - 600
+									(snap.transforms.scale.x *
+										snap.modelFactors.width) /
+										2 -
+									snap.modelFactors.boxWidth
 								}
 							>
 								<Panel />
 							</group>
-							<group position-x={scale.x * 1000 - 1200}>
+							<group
+								position-x={
+									scale.x * snap.modelFactors.width -
+									snap.modelFactors.width
+								}
+							>
 								<EndSection />
 							</group>
 						</group>

@@ -4,6 +4,7 @@ const store = proxy({
 	current: null,
 	modelFactors: {
 		width: 1200,
+		boxWidth: 600,
 		sectionWidth: () => {
 			const result =
 				store.modelFactors.width / store.transforms.widthDensity;
@@ -13,9 +14,29 @@ const store = proxy({
 			const result =
 				(store.modelFactors.width * store.transforms.scale.x) /
 				store.transforms.widthDensity /
-				store.modelFactors.sectionWidth();
+				(store.modelFactors.width / 2);
 			return result;
 		},
+		sectionPositionX: () => {
+			const result =
+				((store.modelFactors.width * store.transforms.scale.x) /
+					store.transforms.widthDensity /
+					store.modelFactors.boxWidth /
+					2) *
+					store.modelFactors.width -
+				store.modelFactors.width / 2;
+			return result;
+		},
+	},
+	sectionPositionX: () => {
+		const result =
+			((store.modelFactors.width * store.transforms.scale.x) /
+				store.transforms.widthDensity /
+				store.modelFactors.boxWidth /
+				2) *
+				store.modelFactors.width -
+			store.modelFactors.width / 2;
+		return result;
 	},
 	transforms: {
 		scale: { x: 1, y: 1, z: 1 },

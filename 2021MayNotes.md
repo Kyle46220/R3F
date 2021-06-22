@@ -322,3 +322,12 @@ Ij think there's also a mistake with the scaling of the horiontal shelf panels i
 But his is a great amount of progress! its all about these store scaling functions for positioning.
 
 Thinking of making this code reusable for other models - I wonder If I could write a more general function which has like a reference to the original model size, actually I think this is just regular scaling neverminds.
+
+Ok starting to get the hang of the sacaling functions - need to next write a function for the horizpanel scaling.
+
+Its good to have to close to working for the first time ever.
+I Think I'd be able to reuse this code without too much hassle for a different model as well.
+
+next will be to position and scale the drawers, and to add in a cupboard. I don't think this will be very hard.
+
+Then - change the row Height.

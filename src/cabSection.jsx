@@ -7,7 +7,7 @@ import { useSnapshot, proxy, subscribe } from 'valtio';
 import { useStore } from './zusStore';
 import DrawerModel from './DrawerGLTFJSX';
 import store from './store';
-import { MathUtils } from 'three';
+import { DynamicCopyUsage, MathUtils } from 'three';
 // const ForwardDrawer = forwardRef((props, ref) => <DrawerModel ref={ref} />);
 
 export default function CabSection() {
@@ -60,11 +60,11 @@ export default function CabSection() {
 				// 		1200 *
 				// 		0.5
 				// }
-				scale-x={
-					(snap.modelFactors.width * scale.x) /
-					snap.transforms.widthDensity /
-					(snap.modelFactors.width / 2)
-				}
+				// scale-x={
+				// 	(snap.modelFactors.width * scale.x) /
+				// 	snap.transforms.widthDensity /
+				// 	(snap.modelFactors.width / 2)
+				// }
 				position-x={
 					((1200 * scale.x) /
 						snap.transforms.widthDensity /
@@ -73,7 +73,8 @@ export default function CabSection() {
 						snap.modelFactors.width -
 					snap.modelFactors.width / 2
 				}
-				// scale-x={snap.modelFactors.sectionScaleX()}
+				// postion-x={snap.sectionPositionX()}
+				scale-x={snap.modelFactors.sectionScaleX()}
 				name={nodes.Solid33.name}
 				material={nodes.Solid33.material}
 				geometry={nodes.Solid33.geometry}
