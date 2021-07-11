@@ -14,8 +14,10 @@ export default function CabSection() {
 	const { nodes, materials } = useLoader(GLTFLoader, '/Assembly4.gltf');
 	const group = useRef();
 	const drawer = useRef();
+	const box = useRef();
 	const center = {};
 	const [active, setActive] = useState(false);
+	const [position, setPosition] = useState(null);
 	const snap = useSnapshot(store);
 	const scale = snap.transforms.scale;
 	function getCenter(e) {
@@ -37,6 +39,12 @@ export default function CabSection() {
 		setActive(!active);
 		console.log(group.current);
 	};
+	useEffect(() => {
+		const center = box.current.geometry.boundingBox.getCenter();
+		setPosition(center);
+		console.log(drawer.current);
+	}, [snap.transforms.scale]);
+
 	useFrame(() => {
 		group.current.updateMatrixWorld();
 	});
@@ -44,63 +52,66 @@ export default function CabSection() {
 
 	return (
 		<group ref={group} rotation-x={MathUtils.degToRad(90)}>
-			<mesh
-				// scale-x={
-				// 	snap.transforms.scale.x * snap.transforms.widthDensity * 0.1
-				// }
-				// position-x={
-				// 	snap.transforms.scale.x *
-				// 		snap.transforms.pos *
-				// 		0.1 *
-				// 		1000 *
-				// 		0.5 -
-				// 	snap.transforms.scale.x *
-				// 		snap.transforms.pos *
-				// 		0.1 *
-				// 		1200 *
-				// 		0.5
-				// }
-				// scale-x={
-				// 	(snap.modelFactors.width * scale.x) /
-				// 	snap.transforms.widthDensity /
-				// 	(snap.modelFactors.width / 2)
-				// }
-				position-x={
-					((1200 * scale.x) /
-						snap.transforms.widthDensity /
-						600 /
-						2) *
-						snap.modelFactors.width -
-					snap.modelFactors.width / 2
-				}
-				// postion-x={snap.sectionPositionX()}
-				scale-x={snap.modelFactors.sectionScaleX()}
-				name={nodes.Solid33.name}
-				material={nodes.Solid33.material}
-				geometry={nodes.Solid33.geometry}
-				// onPointerOver={(e) => handlePointerOver(e)}
-				// onPointerOut={(e) => handlePointerOut(e)}
-				onClick={(e) => handleClick(e)}
-				visible={true}
-			>
-				<meshStandardMaterial
-					attach="material"
-					color={'#db76d1'}
-					transparent={true}
-					opacity={0.5}
-				/>
-			</mesh>
+			<group>
+				<mesh
+					ref={box}
+					// scale-x={
+					// 	snap.transforms.scale.x * snap.transforms.widthDensity * 0.1
+					// }
+					// position-x={
+					// 	snap.transforms.scale.x *
+					// 		snap.transforms.pos *
+					// 		0.1 *
+					// 		1000 *
+					// 		0.5 -
+					// 	snap.transforms.scale.x *
+					// 		snap.transforms.pos *
+					// 		0.1 *
+					// 		1200 *
+					// 		0.5
+					// }
+					// scale-x={
+					// 	(snap.modelFactors.width * scale.x) /
+					// 	snap.transforms.widthDensity /
+					// 	(snap.modelFactors.width / 2)
+					// }
+					position-x={
+						((1200 * scale.x) /
+							snap.transforms.widthDensity /
+							600 /
+							2) *
+							snap.modelFactors.width -
+						snap.modelFactors.width / 2
+					}
+					// postion-x={snap.sectionPositionX()}
+					scale-x={snap.modelFactors.sectionScaleX()}
+					name={nodes.Solid33.name}
+					material={nodes.Solid33.material}
+					geometry={nodes.Solid33.geometry}
+					// onPointerOver={(e) => handlePointerOver(e)}
+					// onPointerOut={(e) => handlePointerOut(e)}
+					onClick={(e) => handleClick(e)}
+					visible={true}
+				>
+					<meshStandardMaterial
+						attach="material"
+						color={'#db76d1'}
+						transparent={true}
+						opacity={0.5}
+					/>
+				</mesh>
+			</group>
 			<mesh
 				material={nodes.Solid51.material}
 				geometry={nodes.Solid51.geometry}
 			></mesh>
-			<DrawerModel
-				// ref={drawer}
+			<group ref={drawer} position={position}>
+				<DrawerModel
+					visible={active ? true : false}
 
-				visible={active ? true : false}
-				position={[-300, 200, 520]}
-				// position={snap.current}
-			/>
+					// position={snap.current}
+				/>
+			</group>
 		</group>
 	);
 }

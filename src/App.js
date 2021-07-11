@@ -11,6 +11,7 @@ import { createStore } from 'redux';
 import FormContainer from './form';
 import styled from 'styled-components';
 import { Controls, useControl } from 'react-three-gui';
+import TabeViewer from './TabeViewer';
 // import { ControlsProvider } from 'react-three-gui/dist/components/controls-provider';
 // import WidthControls from './zusWidth';
 // import HeightControls from './zusHeight';
@@ -112,25 +113,7 @@ class App extends React.Component {
 		return (
 			<Provider store={this.store}>
 				<Wrapper className="App">
-					{/* <ZusViewer /> */}
-					<ModelViewer />
-
-					{/* <div
-						style={{
-							display: 'flex',
-							flexDirection: 'column',
-							border: '1px solid black',
-							width: '50vw',
-							margin: '3em',
-						}}
-					>
-						<h3 style={{ margin: '1rem' }}>
-							built with normal three.js and redux with class
-							components
-						</h3> */}
-					{/* <Viewer /> */}
-					{/* <FormContainer /> */}
-					{/* </div> */}
+					<TabeViewer />
 				</Wrapper>
 			</Provider>
 		);

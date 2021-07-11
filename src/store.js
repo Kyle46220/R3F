@@ -2,9 +2,23 @@ import { proxy } from 'valtio';
 
 const store = proxy({
 	current: null,
+	functions: {
+		getPos: (width, scale) => {
+			const result = ((-scale + 1) / 2) * width;
+
+			return result;
+		},
+		getScale: (currentDimension, desiredDimension) => {
+			const result = desiredDimension / currentDimension;
+			return result;
+		},
+	},
 	modelFactors: {
+		size: 0,
 		width: 1200,
 		boxWidth: 600,
+		backTop: 0,
+		leftTop: 0,
 		sectionWidth: () => {
 			const result =
 				store.modelFactors.width / store.transforms.widthDensity;
@@ -39,6 +53,7 @@ const store = proxy({
 		return result;
 	},
 	transforms: {
+		border: 0,
 		scale: { x: 1, y: 1, z: 1 },
 		shelfQTY: 3,
 		shelfHeights: { 0: 195, 1: 295, 2: 395, 3: 495, 4: 595 },

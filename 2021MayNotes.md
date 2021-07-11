@@ -330,4 +330,47 @@ I Think I'd be able to reuse this code without too much hassle for a different m
 
 next will be to position and scale the drawers, and to add in a cupboard. I don't think this will be very hard.
 
-Then - change the row Height.
+Then - change the row Height. where the slider causes a re-render of the whole shelf, I wonder if I can use transient updating to not cause a whole component rerender and then avoid the [roblem of the shelves jumping up and down because the shelf height changes on every render.
+
+So an idea is to change the imported 3D Model so that the dimensions are all relevant to 1. eg make the table 1m by 1m with 0.1m border etc. Another idea might be to make a function that takes the original size as a param and then makes it uniform for later scaling
+
+Working on the table configurator now.
+
+to swap out the legs etc. Make allthe different changes that aren't scaling - eg - cups, topper, legs. and then just import the gltf's the same, so they're all positioned in the same way. Then you can just load the part of the model that you need.
+
+one question - in fusion, if i hide all except the part i want to upload, will this still keep the position of the solid, the same in world space? or will the world space change to only contain this solid? I hope it keeps the position otherwise I will have to load up 8 different models.
+
+actually- also where there's extrusions holes, I could just have little lids in there that turn on or off- eg cups or leds, or legs could all be in the same model overlapping and then we jsut don't show that.
+
+so in starting to get my head around this model for the tabe. its gonne be more of the same - calculating positions and scale. the easiest way to do this would just be in inside the component built from the GLtf, there was just some tags i could put in because really, there's only a few ways I wan't thinfgs to change
+
+they would be called for example
+
+"change position on width scale"
+"change width scale on width scale"
+'change position on depth scale"
+'justify width position (L, Centre, R) on width scale"
+
+then i can just label each node mesh in the gltfjsx to plug it in.
+
+This would also be transferrable to many other models.
+
+I would put this all in the store. keeps the code very clean. need to input the original model params. I coud even label these in a particular way from inventor, to make thes uato import to the configurator via CSV. There's jquerytoCSV plugin.
+
+I coud even write a "wishLIST" code where i put comments in with thins like 'getPositionJustifyCenter(Item)', put it in the GLTFJSX code and then right the function after.
+
+if i have functions for
+
+-   get model part dimensions in mm (this could be from th gltf file) https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/figures/gltfOverview-2.0.0b.png
+-   scale part in each axis
+-   justify part start, centre, end (based on scale)
+-   get position from model dimensions (this could be under primitives in the gltf file)
+
+So I just need different functions in the store to calculate position and scale.
+
+Get Mesh dimensions
+
+var box = new THREE.Box3().setFromObject( colladaModel );
+console.log( box.min, box.max, box.getSize() );
+
+So the position always seems to be at zero for the objects because it includes the negative space.
