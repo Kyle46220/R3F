@@ -374,3 +374,5 @@ var box = new THREE.Box3().setFromObject( colladaModel );
 console.log( box.min, box.max, box.getSize() );
 
 So the position always seems to be at zero for the objects because it includes the negative space.
+
+figure out the functions for edge justification is to offset the position by (distance from 0/center \* scale) - distance from 0

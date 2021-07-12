@@ -28,7 +28,7 @@ export default function Model(props) {
 		store.modelFactors.leftRail = left.current.children[1].geometry.boundingBox.getSize();
 		store.modelFactors.leftInner = left.current.children[0].geometry.boundingBox.getSize();
 		store.modelFactors.leftTop = left.current.children[2].geometry.boundingBox.getSize();
-		// console.log(group.current);
+		console.log(snap.modelFactors);
 	}, [snap.transforms.scale]);
 
 	return (
@@ -59,16 +59,25 @@ export default function Model(props) {
 				/>
 				<mesh
 					name={'topF'}
-					scale-y={snap.functions.getScale(
-						200,
+					// scale-y={snap.functions.getScale(
+					// 	200,
+					// 	snap.transforms.border
+					// )}
+					scale-y={snap.transforms.border}
+					// position-y={snap.functions.getEdge(
+					// 	snap.modelFactors.backTop.z,
+					// 	snap.transforms.border
+					// )}
+					position-y={snap.functions.getEdge(
+						snap.modelFactors.leftTop.y,
 						snap.transforms.border
 					)}
-					// position-y={-snap.transforms.border}
-					position-y={
-						(-snap.functions.getScale(200, snap.transforms.border) +
-							1) /
-						600
-					}
+					// position-y={
+					// 	((1150 * snap.transforms.border) / 1 / 575 / 2) *
+					// 		snap.modelFactors.backTop.z -
+					// 	snap.modelFactors.backTop.z / 2
+					// }
+
 					material={nodes.Solid19.material}
 					geometry={nodes.Solid19.geometry}
 				/>
@@ -95,6 +104,13 @@ export default function Model(props) {
 
 				<mesh
 					name={'topB'}
+					position-y={
+						-snap.functions.getEdge(
+							snap.modelFactors.leftTop.y,
+							snap.transforms.border
+						)
+					}
+					scale-y={snap.transforms.border}
 					material={nodes.Solid111.material}
 					geometry={nodes.Solid111.geometry}
 				/>
@@ -119,6 +135,13 @@ export default function Model(props) {
 				/>{' '}
 				<mesh
 					name={'topR'}
+					position-x={
+						-snap.functions.getEdge(
+							snap.modelFactors.backTop.x,
+							snap.transforms.border
+						)
+					}
+					scale-x={snap.transforms.border}
 					material={nodes.Solid18.material}
 					geometry={nodes.Solid18.geometry}
 				/>
@@ -147,6 +170,11 @@ export default function Model(props) {
 
 				<mesh
 					name={'topL'}
+					scale-x={snap.transforms.border}
+					position-x={snap.functions.getEdge(
+						snap.modelFactors.backTop.x,
+						snap.transforms.border
+					)}
 					material={nodes.Solid110.material}
 					geometry={nodes.Solid110.geometry}
 				/>

@@ -15,10 +15,10 @@ export default () => {
 	// useFrame((state, delta) => (mesh.current.rotation.x += 0.01));
 	const border = useControl('Border Width', {
 		type: 'number',
-		value: 120,
+		value: 1,
 		state: [snap.transforms.border, (e) => (store.transforms.border = e)],
-		min: 120,
-		max: 250,
+		min: 0,
+		max: 6,
 	});
 	const widthScale = useControl('Width Scale', {
 		type: 'number',

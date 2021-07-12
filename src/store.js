@@ -12,6 +12,11 @@ const store = proxy({
 			const result = desiredDimension / currentDimension;
 			return result;
 		},
+		getEdge: (fullDimension, scale) => {
+			const result = (fullDimension / 2) * scale - fullDimension / 2;
+
+			return result;
+		},
 	},
 	modelFactors: {
 		size: 0,
