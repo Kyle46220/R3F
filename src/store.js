@@ -17,6 +17,12 @@ const store = proxy({
 
 			return result;
 		},
+		getPosOffset: (dimension, offset, scale) => {
+			// const result =
+			// 	dimension / 2 - offset - (dimension / 2 - offset * scale);
+			const result = offset - offset * scale;
+			return result;
+		},
 	},
 	modelFactors: {
 		size: 0,
@@ -58,7 +64,7 @@ const store = proxy({
 		return result;
 	},
 	transforms: {
-		border: 0,
+		border: 1,
 		scale: { x: 1, y: 1, z: 1 },
 		shelfQTY: 3,
 		shelfHeights: { 0: 195, 1: 295, 2: 395, 3: 495, 4: 595 },

@@ -124,6 +124,12 @@ export default function Model(props) {
 				}
 			>
 				<mesh
+					position-x={snap.functions.getPosOffset(
+						1450,
+						200,
+						snap.transforms.border
+					)}
+					scale-y={snap.transforms.border}
 					name={'innerR'}
 					material={nodes.Solid13.material}
 					geometry={nodes.Solid13.geometry}
