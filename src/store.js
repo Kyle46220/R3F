@@ -17,14 +17,22 @@ const store = proxy({
 
 			return result;
 		},
-		getPosOffset: (dimension, offset, scale) => {
-			// const result =
-			// 	dimension / 2 - offset - (dimension / 2 - offset * scale);
+		getPosOffset: (offset, scale) => {
 			const result = offset - offset * scale;
+			return result;
+		},
+		getScaleWithOffset: (total, offset, scale) => {
+			const oldDim = total - 2 * offset;
+
+			const newDim = total - 2 * scale * offset;
+
+			const result = store.functions.getScale(oldDim, newDim);
+
 			return result;
 		},
 	},
 	modelFactors: {
+		table: 0,
 		size: 0,
 		width: 1200,
 		boxWidth: 600,
@@ -64,6 +72,8 @@ const store = proxy({
 		return result;
 	},
 	transforms: {
+		legs: true,
+		colour: '#ffffff',
 		border: 1,
 		scale: { x: 1, y: 1, z: 1 },
 		shelfQTY: 3,

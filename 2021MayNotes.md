@@ -376,3 +376,16 @@ console.log( box.min, box.max, box.getSize() );
 So the position always seems to be at zero for the objects because it includes the negative space.
 
 figure out the functions for edge justification is to offset the position by (distance from 0/center \* scale) - distance from 0
+
+Ok So really struggling to get the gltf's to lead. I think the file is too big. I might have to break it down into separate files. This might not be so bad.
+
+ok So after heaps of fucking around. I figured hoew to load the asset. The Bin file needed to be included. The Bin file must be the machine code part that describes the geometry. The human part of the gltf file will then access this.
+
+Best Process is to direct export the model from fusion in OBJ format then use wings 3D to convert to GLTF. Making sure to flip axis and specify GLTF not GLB.
+
+The benefit here is that it keeps the names of the solids.
+
+I adjusted the model in fusion to have no components and be all solids. This is done by selecting all the solids inside the various components.
+
+How to group the parts of the model?
+Still need to have sections where transfroms of greoup are relevant eg front, side legs. Things like on/of colour can be done with state.

@@ -23,7 +23,13 @@ import Slider from './Slider';
 import Panel from './HorizontalPanels';
 import EndSection from './EndSection';
 import BasicTabe from './BasicTabe';
+import { useLoader } from 'react-three-fiber';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+
 import Box from './Box';
+
+import SolidTabe from './SolidTabe';
+import BaseRailsLegs from './BaseRailsLegs';
 
 // const state = proxy({ current: null });
 
@@ -54,16 +60,53 @@ const ControlOrbit = () => {
 };
 
 export default () => {
+	const { nodes } = useLoader(GLTFLoader, '/SolidTabe.gltf');
+	const getNames = (nodes) => {
+		// the below function works perfectly except triggers too many re-renders for some reason.
+		Object.entries(nodes).map((i) => {
+			const name = i[0];
+			store.modelFactors[name] = nodes[
+				name
+			].geometry.boundingBox.getSize();
+		});
+	};
+	useEffect(() => {
+		getNames(nodes);
+	});
 	return (
 		<Wrapper>
 			{/* <StateViewer /> */}
 			<Controls.Provider>
-				<MyCanvas camera={{ position: [2000, 2000, 2500], far: 11000 }}>
+				<MyCanvas
+					shadows
+					camera={{
+						position: [2000, 2000, 2500],
+						far: 11000,
+						fov: 50,
+					}}
+				>
 					<ambientLight />
-					<pointLight position={[10, 10, 10]} />
+					<spotLight
+						intensity={1}
+						angle={0.3}
+						penumbra={1}
+						position={[2000, 3000, 2000]}
+						castShadow
+					/>
+					<spotLight
+						intensity={1}
+						angle={0.3}
+						penumbra={1}
+						position={[-2000, 3000, -2000]}
+						castShadow
+					/>
+
+					<pointLight position={[1000, 1000, 1000]} />
 					<Suspense fallback={null}>
 						<Box />
-						<BasicTabe />
+						{/* <BaseRailsLegs />
+						 */}
+						<SolidTabe />
 					</Suspense>
 
 					<ControlOrbit />

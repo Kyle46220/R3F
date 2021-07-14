@@ -1,4 +1,5 @@
 import React from 'react';
+import { Suspense } from 'react';
 // import { render } from 'react-dom';
 import Viewer from './Viewer';
 // import Width from './width';
@@ -113,7 +114,9 @@ class App extends React.Component {
 		return (
 			<Provider store={this.store}>
 				<Wrapper className="App">
-					<TabeViewer />
+					<Suspense fallback={null}>
+						<TabeViewer />
+					</Suspense>
 				</Wrapper>
 			</Provider>
 		);

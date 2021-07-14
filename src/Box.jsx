@@ -54,9 +54,9 @@ export default () => {
 		>
 			<boxGeometry
 				args={[
-					snap.modelFactors.backTop.x,
-					755,
-					snap.modelFactors.leftTop.y,
+					snap.modelFactors.table.x,
+					snap.modelFactors.table.y,
+					snap.modelFactors.table.z,
 				]}
 			/>
 			<meshStandardMaterial
