@@ -9,6 +9,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { useSnapshot } from 'valtio';
 import store from './store';
 import { Controls, useControl, withControls } from 'react-three-gui';
+import { MeshBasicMaterial } from 'three';
 const getNames = (nodes) => {
 	// the below function works perfectly except triggers too many re-renders for some reason.
 	Object.entries(nodes).map((i) => {
@@ -18,47 +19,29 @@ const getNames = (nodes) => {
 };
 
 export default function Model(props) {
+	console.log('component Mount');
 	const snap = useSnapshot(store);
 	const group = useRef();
 	const scale = snap.transforms.scale;
 	const { nodes, materials } = useLoader(GLTFLoader, '/SolidTabe.gltf');
 	const [cover, setCover] = useState(true);
-	const [legs, setLegs] = useState(true);
-
-	const toggleLegs = useControl('Toggle Legs', {
-		type: 'button',
-		onClick: () => setLegs(!legs),
-		// state: [
-		// 	snap.transforms.legs,
-		// 	() => store.transforms.legs(!snap.transforms.legs),
-		// ],
-	});
+	const legs = snap.modelFactors.legs;
+	const legMaterial = new MeshBasicMaterial({ color: 'black' });
+	const topper = snap.modelFactors.topper;
 
 	useEffect(() => {
 		// getNames(nodes);
-		console.log(group);
+
 		group.current.castShadow = true;
 		group.current.receiveShadow = true;
-		const tableBoundingBox = new THREE.Box3();
-		tableBoundingBox.expandByObject(nodes.LegFR);
-		tableBoundingBox.expandByObject(nodes.CoverL);
-		store.modelFactors.table = tableBoundingBox.getSize();
-		console.log(snap.modelFactors);
 	}, []);
 
-	useEffect(() => {
-		console.log(snap.transforms.legs);
-	}, [snap.transforms]);
+	useEffect(() => {}, [snap.transforms]);
 	return (
 		<group ref={group} {...props} dispose={null}>
 			<group name={'Front'}>
-				<mesh
-					material={materials.Panel_Beige}
-					geometry={nodes.TopCovF3.geometry}
-				/>
 				<group
 					name={'Front Scale'}
-					scale-x={scale.x}
 					position-z={
 						-snap.functions.getPos(
 							snap.modelFactors.table.z,
@@ -67,6 +50,39 @@ export default function Model(props) {
 					}
 				>
 					<mesh
+						visible={topper == 'inset' ? true : false}
+						position-z={
+							-snap.functions.getEdge(
+								snap.modelFactors.table.z,
+								snap.transforms.border
+							)
+						}
+						scale-x={snap.functions.getScale(
+							snap.functions.getScale(
+								1050 * scale.x,
+								1450 * scale.x - 400 * snap.transforms.border
+							) * 1450,
+							snap.functions.getScale(
+								1050 * scale.x,
+								1450 * scale.x - 400 * snap.transforms.border
+							) *
+								1050 *
+								snap.transforms.border *
+								scale.x
+						)}
+						scale-z={snap.transforms.border}
+						material={materials.Panel_Beige}
+						geometry={nodes.TopSetF2.geometry}
+					/>
+					<mesh
+						position-z={
+							-snap.functions.getEdge(
+								snap.modelFactors.table.z,
+								snap.transforms.border
+							)
+						}
+						scale-z={snap.transforms.border}
+						visible={topper == 'cover' ? true : false}
 						material={materials.Panel_Beige}
 						geometry={nodes.TopCovF2.geometry}
 					/>
@@ -90,10 +106,22 @@ export default function Model(props) {
 					)}
 				>
 					<mesh
+						visible={topper == 'inset' ? true : false}
+						position-z={snap.functions.getEdge(
+							snap.modelFactors.table.z,
+							snap.transforms.border
+						)}
+						scale-z={snap.transforms.border}
 						material={materials.Panel_Beige}
 						geometry={nodes.TopSetB2.geometry}
 					/>
 					<mesh
+						visible={topper == 'cover' ? true : false}
+						position-z={snap.functions.getEdge(
+							snap.modelFactors.table.z,
+							snap.transforms.border
+						)}
+						scale-z={snap.transforms.border}
 						material={materials.Panel_Beige}
 						geometry={nodes.TopCovB2.geometry}
 					/>
@@ -105,21 +133,9 @@ export default function Model(props) {
 						material={materials.Panel_Beige}
 						geometry={nodes.RailB.geometry}
 					/>
-					<mesh
-						material={materials.Panel_Beige}
-						geometry={nodes.TopSetB2.geometry}
-					/>
 				</group>
 			</group>
 			<group name={'Right'}>
-				<mesh
-					material={materials.Panel_Beige}
-					geometry={nodes.TopCovR1.geometry}
-				/>
-				<mesh
-					material={materials.Panel_Beige}
-					geometry={nodes.TopCovR3.geometry}
-				/>
 				<group
 					name={'Right Scale'}
 					scale-z={scale.z}
@@ -131,10 +147,30 @@ export default function Model(props) {
 					}
 				>
 					<mesh
+						visible={topper == 'inset' ? true : false}
+						position-x={
+							-snap.functions.getEdge(
+								snap.modelFactors.table.x,
+								snap.transforms.border
+							)
+						}
+						scale-x={snap.transforms.border}
+						material={materials.Panel_Beige}
+						geometry={nodes.TopSetR2.geometry}
+					/>
+					<mesh
 						material={materials.Panel_Beige}
 						geometry={nodes.InnerR.geometry}
 					/>
 					<mesh
+						visible={topper == 'cover' ? true : false}
+						position-x={
+							-snap.functions.getEdge(
+								snap.modelFactors.table.x,
+								snap.transforms.border
+							)
+						}
+						scale-x={snap.transforms.border}
 						material={materials.Panel_Beige}
 						geometry={nodes.TopCovR2.geometry}
 					/>
@@ -145,10 +181,6 @@ export default function Model(props) {
 				</group>
 			</group>
 			<group name={'Left'}>
-				<mesh
-					material={materials.Panel_Beige}
-					geometry={nodes.TopCovL3.geometry}
-				/>
 				<group
 					name={'Left Scale'}
 					scale-z={scale.z}
@@ -158,6 +190,12 @@ export default function Model(props) {
 					)}
 				>
 					<mesh
+						visible={topper == 'inset' ? true : false}
+						position-x={snap.functions.getEdge(
+							snap.modelFactors.table.x,
+							snap.transforms.border
+						)}
+						scale-x={snap.transforms.border}
 						material={materials.Panel_Beige}
 						geometry={nodes.TopSetL2.geometry}
 					/>
@@ -166,6 +204,12 @@ export default function Model(props) {
 						geometry={nodes.InnerL.geometry}
 					/>
 					<mesh
+						visible={topper == 'cover' ? true : false}
+						position-x={snap.functions.getEdge(
+							snap.modelFactors.table.x,
+							snap.transforms.border
+						)}
+						scale-x={snap.transforms.border}
 						material={materials.Panel_Beige}
 						geometry={nodes.TopCovL2.geometry}
 					/>
@@ -178,7 +222,8 @@ export default function Model(props) {
 			<group name={'Overall Scale'} scale-x={scale.x} scale-z={scale.z}>
 				<group
 					name={'coverTopper'}
-					visible={cover}
+					visible={cover && topper == 'cover' ? true : false}
+					material={materials.Panel_Beige}
 					onClick={() => setCover(!cover)}
 				>
 					<mesh
@@ -188,7 +233,6 @@ export default function Model(props) {
 					<mesh
 						material={materials.Panel_Beige}
 						geometry={nodes.CoverML.geometry}
-						material-color={'teal'}
 					/>
 					<mesh
 						material={materials.Panel_Beige}
@@ -215,25 +259,32 @@ export default function Model(props) {
 						/>
 					</group>
 				</group>
+				<group
+					name={'insetTopper'}
+					visible={cover && topper == 'inset' ? true : false}
+				>
+					<mesh
+						material={materials.Panel_Beige}
+						geometry={nodes.InsetTopFill.geometry}
+					/>
+					<mesh
+						material={materials.Panel_Beige}
+						geometry={nodes.InsetTopR.geometry}
+					/>
+					<mesh
+						material={materials.Panel_Beige}
+						geometry={nodes.InsetTopL.geometry}
+					/>
+				</group>
 
 				<mesh
 					material={materials.Panel_Beige}
-					geometry={nodes.InsetTopFill.geometry}
-				/>
-				<mesh
-					material={materials.Panel_Beige}
-					geometry={nodes.InsetTopR.geometry}
-				/>
-				<mesh
-					material={materials.Panel_Beige}
-					geometry={nodes.InsetTopL.geometry}
-				/>
-				<mesh
-					material={materials.Panel_Beige}
 					geometry={nodes.BaseBoard.geometry}
-				/>
+				>
+					<meshStandardMaterial color={'hotpink'} />
+				</mesh>
 			</group>
-			<group name={'Legs'} visible={false}></group>
+			<group name={'Legs'}></group>
 			<group
 				name={'BackLeftCorner'}
 				position-z={snap.functions.getPos(
@@ -245,6 +296,40 @@ export default function Model(props) {
 					scale.x
 				)}
 			>
+				<group
+					name="topPiecesBR"
+					scale-x={snap.transforms.border}
+					scale-z={snap.transforms.border}
+					position-x={snap.functions.getEdge(
+						snap.modelFactors.table.x,
+						snap.transforms.border
+					)}
+					position-z={snap.functions.getEdge(
+						snap.modelFactors.table.z,
+						snap.transforms.border
+					)}
+				>
+					<mesh
+						visible={topper == 'inset' ? true : false}
+						material={materials.Panel_Beige}
+						geometry={nodes.TopSetL1.geometry}
+					/>
+					<mesh
+						visible={topper == 'inset' ? true : false}
+						material={materials.Panel_Beige}
+						geometry={nodes.TopSetB3.geometry}
+					/>
+					<mesh
+						visible={topper == 'cover' ? true : false}
+						material={materials.Panel_Beige}
+						geometry={nodes.TopCovB3.geometry}
+					/>
+					<mesh
+						visible={topper == 'cover' ? true : false}
+						material={materials.Panel_Beige}
+						geometry={nodes.TopCovL1.geometry}
+					/>
+				</group>
 				<mesh
 					material={materials.Panel_Beige}
 					geometry={nodes.BLLegBlock.geometry}
@@ -257,30 +342,17 @@ export default function Model(props) {
 					material={materials.Panel_Beige}
 					geometry={nodes.CupLB.geometry}
 				/>
+
 				<mesh
-					visible={legs ? true : false}
+					visible={legs == 'Timber' ? true : false}
 					material={materials.Panel_Beige}
 					geometry={nodes.LegBL.geometry}
 				/>
+
 				<mesh
-					material={materials.Panel_Beige}
+					visible={legs == 'Steel' ? true : false}
+					material={legMaterial}
 					geometry={nodes.SteelLegBL.geometry}
-				/>
-				<mesh
-					material={materials.Panel_Beige}
-					geometry={nodes.TopSetL1.geometry}
-				/>
-				<mesh
-					material={materials.Panel_Beige}
-					geometry={nodes.TopSetB3.geometry}
-				/>
-				<mesh
-					material={materials.Panel_Beige}
-					geometry={nodes.TopCovB3.geometry}
-				/>
-				<mesh
-					material={materials.Panel_Beige}
-					geometry={nodes.TopCovL1.geometry}
 				/>
 			</group>
 			<group
@@ -293,6 +365,44 @@ export default function Model(props) {
 					-snap.functions.getPos(snap.modelFactors.table.x, scale.x)
 				}
 			>
+				<group
+					name="topPiecesBR"
+					scale-x={snap.transforms.border}
+					scale-z={snap.transforms.border}
+					position-x={
+						-snap.functions.getEdge(
+							snap.modelFactors.table.x,
+							snap.transforms.border
+						)
+					}
+					position-z={snap.functions.getEdge(
+						snap.modelFactors.table.z,
+						snap.transforms.border
+					)}
+				>
+					<mesh
+						visible={topper == 'cover' ? true : false}
+						material={materials.Panel_Beige}
+						geometry={nodes.TopCovR3.geometry}
+					/>
+					<mesh
+						visible={topper == 'inset' ? true : false}
+						material={materials.Panel_Beige}
+						geometry={nodes.TopSetR3.geometry}
+					/>
+
+					<mesh
+						visible={topper == 'inset' ? true : false}
+						material={materials.Panel_Beige}
+						geometry={nodes.TopSetB1.geometry}
+					/>
+					<mesh
+						visible={topper == 'cover' ? true : false}
+						material={materials.Panel_Beige}
+						geometry={nodes.TopCovB1.geometry}
+					/>
+				</group>
+
 				<mesh
 					material={materials.Panel_Beige}
 					geometry={nodes.BRLegBlock.geometry}
@@ -306,25 +416,14 @@ export default function Model(props) {
 					geometry={nodes.CupRB.geometry}
 				/>
 				<mesh
+					visible={legs == 'Timber' ? true : false}
 					material={materials.Panel_Beige}
 					geometry={nodes.LegBR.geometry}
 				/>
 				<mesh
-					material={materials.Panel_Beige}
+					visible={legs == 'Steel' ? true : false}
+					material={legMaterial}
 					geometry={nodes.SteelLegBR.geometry}
-				/>
-				<mesh
-					material={materials.Panel_Beige}
-					geometry={nodes.TopSetR3.geometry}
-				/>
-
-				<mesh
-					material={materials.Panel_Beige}
-					geometry={nodes.TopSetB1.geometry}
-				/>
-				<mesh
-					material={materials.Panel_Beige}
-					geometry={nodes.TopCovB1.geometry}
 				/>
 			</group>
 			<group
@@ -337,6 +436,43 @@ export default function Model(props) {
 					scale.x
 				)}
 			>
+				{' '}
+				<group
+					name="topPiecesFL"
+					scale-x={snap.transforms.border}
+					scale-z={snap.transforms.border}
+					position-x={snap.functions.getEdge(
+						snap.modelFactors.table.x,
+						snap.transforms.border
+					)}
+					position-z={
+						-snap.functions.getEdge(
+							snap.modelFactors.table.z,
+							snap.transforms.border
+						)
+					}
+				>
+					<mesh
+						visible={topper == 'inset' ? true : false}
+						material={materials.Panel_Beige}
+						geometry={nodes.TopSetF1.geometry}
+					/>
+					<mesh
+						visible={topper == 'inset' ? true : false}
+						material={materials.Panel_Beige}
+						geometry={nodes.TopSetL3.geometry}
+					/>
+					<mesh
+						visible={topper == 'cover' ? true : false}
+						material={materials.Panel_Beige}
+						geometry={nodes.TopCovF1.geometry}
+					/>
+					<mesh
+						visible={topper == 'cover' ? true : false}
+						material={materials.Panel_Beige}
+						geometry={nodes.TopCovL3.geometry}
+					/>
+				</group>
 				<mesh
 					material={materials.Panel_Beige}
 					geometry={nodes.FLLegBlock.geometry}
@@ -350,24 +486,14 @@ export default function Model(props) {
 					geometry={nodes.CupFL.geometry}
 				/>
 				<mesh
+					visible={legs == 'Timber' ? true : false}
 					material={materials.Panel_Beige}
 					geometry={nodes.LegFL.geometry}
 				/>
 				<mesh
-					material={materials.Panel_Beige}
+					visible={legs == 'Steel' ? true : false}
+					material={legMaterial}
 					geometry={nodes.SteelLegFL.geometry}
-				/>
-				<mesh
-					material={materials.Panel_Beige}
-					geometry={nodes.TopSetF1.geometry}
-				/>
-				<mesh
-					material={materials.Panel_Beige}
-					geometry={nodes.TopSetL3.geometry}
-				/>
-				<mesh
-					material={materials.Panel_Beige}
-					geometry={nodes.TopCovF1.geometry}
 				/>
 			</group>
 			<group
@@ -380,10 +506,46 @@ export default function Model(props) {
 					-snap.functions.getPos(snap.modelFactors.table.x, scale.x)
 				}
 			>
-				<mesh
-					material={materials.Panel_Beige}
-					geometry={nodes.TopSetF3.geometry}
-				/>
+				<group
+					name="topPiecesBR"
+					scale-x={snap.transforms.border}
+					scale-z={snap.transforms.border}
+					position-x={
+						-snap.functions.getEdge(
+							snap.modelFactors.table.x,
+							snap.transforms.border
+						)
+					}
+					position-z={
+						-snap.functions.getEdge(
+							snap.modelFactors.table.z,
+							snap.transforms.border
+						)
+					}
+				>
+					<mesh
+						visible={topper == 'cover' ? true : false}
+						material={materials.Panel_Beige}
+						geometry={nodes.TopCovR1.geometry}
+					/>
+					<mesh
+						visible={topper == 'cover' ? true : false}
+						material={materials.Panel_Beige}
+						geometry={nodes.TopCovF3.geometry}
+						material-color={'brown'}
+					/>
+					<mesh
+						visible={topper == 'inset' ? true : false}
+						material={materials.Panel_Beige}
+						geometry={nodes.TopSetF3.geometry}
+					/>
+					<mesh
+						visible={topper == 'inset' ? true : false}
+						material={materials.Panel_Beige}
+						geometry={nodes.TopSetR1.geometry}
+					/>
+				</group>
+
 				<mesh
 					material={materials.Panel_Beige}
 					geometry={nodes.FRLegBlock.geometry}
@@ -397,28 +559,16 @@ export default function Model(props) {
 					geometry={nodes.CupRF.geometry}
 				/>
 				<mesh
+					visible={legs == 'Timber' ? true : false}
 					material={materials.Panel_Beige}
 					geometry={nodes.LegFR.geometry}
 				/>
 				<mesh
-					material={materials.Panel_Beige}
+					visible={legs == 'Steel' ? true : false}
+					material={legMaterial}
 					geometry={nodes.SteelLegFR.geometry}
 				/>
-				<mesh
-					material={materials.Panel_Beige}
-					geometry={nodes.TopSetR1.geometry}
-				/>
 			</group>
-
-			<mesh
-				material={materials.Panel_Beige}
-				geometry={nodes.TopSetF2.geometry}
-			/>
-
-			<mesh
-				material={materials.Panel_Beige}
-				geometry={nodes.TopSetR2.geometry}
-			/>
 		</group>
 	);
 }

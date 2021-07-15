@@ -32,6 +32,7 @@ const store = proxy({
 		},
 	},
 	modelFactors: {
+		topper: 'inset',
 		table: 0,
 		size: 0,
 		width: 1200,
@@ -72,7 +73,7 @@ const store = proxy({
 		return result;
 	},
 	transforms: {
-		legs: true,
+		legs: 'Timber',
 		colour: '#ffffff',
 		border: 1,
 		scale: { x: 1, y: 1, z: 1 },

@@ -10,12 +10,23 @@ import ModelViewer from './ModelViewer';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import FormContainer from './form';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 import { Controls, useControl } from 'react-three-gui';
 import TabeViewer from './TabeViewer';
+import { Client as Styletron } from 'styletron-engine-atomic';
+import { Provider as StyletronProvider } from 'styletron-react';
+import { LightTheme, BaseProvider, styled } from 'baseui';
+import { StatefulInput } from 'baseui/input';
 // import { ControlsProvider } from 'react-three-gui/dist/components/controls-provider';
 // import WidthControls from './zusWidth';
 // import HeightControls from './zusHeight';
+const engine = new Styletron();
+const Centered = styled('div', {
+	display: 'flex',
+	justifyContent: 'center',
+	alignItems: 'center',
+	height: '100vh',
+});
 const initialState = {
 	shelvesY: [0, 280, 560, 840, 1120],
 	divsX: [
@@ -38,14 +49,14 @@ const initialState = {
 // 	// this is somehow going to be useful for creating an action creator or reducer that can update any value in the state object. like in the reducer below, i want the hardcoded 'height' to be omething like action.myUpdatingValue.key and the value to be action.myUpdatingValue. both sides of the key/value pair come in.
 // }
 
-const Wrapper = styled.section`
-	height: 100vh;
-	width: 100vw;
-	display: flex;
-	justify-content: center;
-	flex-direction: row;
-	align-items: center;
-`;
+// const Wrapper = styled.section`
+// 	height: 100vh;
+// 	width: 100vw;
+// 	display: flex;
+// 	justify-content: center;
+// 	flex-direction: row;
+// 	align-items: center;
+// `;
 class App extends React.Component {
 	reducer(state = initialState, action) {
 		let newState = {};
@@ -112,13 +123,17 @@ class App extends React.Component {
 
 	render() {
 		return (
-			<Provider store={this.store}>
-				<Wrapper className="App">
-					<Suspense fallback={null}>
-						<TabeViewer />
-					</Suspense>
-				</Wrapper>
-			</Provider>
+			<StyletronProvider value={engine}>
+				<BaseProvider theme={LightTheme}>
+					<Provider store={this.store}>
+						<Centered className="App">
+							<Suspense fallback={null}>
+								<TabeViewer />
+							</Suspense>
+						</Centered>
+					</Provider>
+				</BaseProvider>
+			</StyletronProvider>
 		);
 	}
 }

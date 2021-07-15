@@ -72,7 +72,11 @@ export default () => {
 	};
 	useEffect(() => {
 		getNames(nodes);
-	});
+		const tableBoundingBox = new THREE.Box3();
+		tableBoundingBox.expandByObject(nodes.LegFR);
+		tableBoundingBox.expandByObject(nodes.CoverL);
+		store.modelFactors.table = tableBoundingBox.getSize();
+	}, []);
 	return (
 		<Wrapper>
 			{/* <StateViewer /> */}

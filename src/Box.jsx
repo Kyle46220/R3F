@@ -3,6 +3,7 @@ import { Controls, useControl, withControls } from 'react-three-gui';
 import { subscribe, useSnapshot, proxy } from 'valtio';
 import store from './store';
 import { MathUtils } from 'three';
+import ButtonGroup from './ButtonGroup';
 
 export default () => {
 	const snap = useSnapshot(store);
@@ -27,17 +28,21 @@ export default () => {
 		min: 1,
 		max: 6,
 	});
-	const heightScale = useControl('Height Scale', {
-		type: 'number',
-		value: 1,
-		state: [snap.transforms.scale.y, (e) => (store.transforms.scale.y = e)],
-		min: 1,
-		max: 6,
-	});
+	// const heightScale = useControl('Height Scale', {
+	// 	type: 'number',
+	// 	value: 1,
+	// 	state: [snap.transforms.scale.y, (e) => (store.transforms.scale.y = e)],
+	// 	min: 1,
+	// 	max: 6,
+	// });
 	const depthScale = useControl('Depth Scale', {
 		type: 'number',
 		value: 1,
 		state: [snap.transforms.scale.z, (e) => (store.transforms.scale.z = e)],
+	});
+	const legType = useControl('Legs', {
+		type: 'custom',
+		component: ButtonGroup,
 	});
 
 	// Return view, these are regular three.js elements expressed in JSX
@@ -45,12 +50,12 @@ export default () => {
 		<mesh
 			ref={mesh}
 			// rotation-x={MathUtils.degToRad(-90)}
-			scale={[widthScale, heightScale, depthScale]}
+			scale={[widthScale, snap.transforms.scale.y, depthScale]}
 			position-y={392}
 			onClick={(event) => setActive(!active)}
 			onPointerOver={(event) => setHover(true)}
 			onPointerOut={(event) => setHover(false)}
-			visible={true}
+			visible={false}
 		>
 			<boxGeometry
 				args={[
