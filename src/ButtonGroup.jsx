@@ -7,6 +7,7 @@ import { useSnapshot } from 'valtio';
 export default (props) => {
 	const [selected, setSelected] = React.useState(0);
 	const [selected2, setSelected2] = React.useState(0);
+	const [cups, setCups] = React.useState(false);
 	const snap = useSnapshot(store);
 	return (
 		<>
@@ -40,6 +41,16 @@ export default (props) => {
 					Inset
 				</Button>
 			</ButtonGroup>
+			<Button
+				size={SIZE.mini}
+				isSelected={cups}
+				onClick={() => (
+					(store.modelFactors.cups = !snap.modelFactors.cups),
+					setCups(!cups)
+				)}
+			>
+				Cups
+			</Button>
 		</>
 	);
 };

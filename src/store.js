@@ -32,6 +32,7 @@ const store = proxy({
 		},
 	},
 	modelFactors: {
+		cups: true,
 		topper: 'inset',
 		table: 0,
 		size: 0,

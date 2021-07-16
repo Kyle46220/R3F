@@ -9,7 +9,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { useSnapshot } from 'valtio';
 import store from './store';
 import { Controls, useControl, withControls } from 'react-three-gui';
-import { MeshBasicMaterial } from 'three';
+import { MeshBasicMaterial, MeshStandardMaterial } from 'three';
 const getNames = (nodes) => {
 	// the below function works perfectly except triggers too many re-renders for some reason.
 	Object.entries(nodes).map((i) => {
@@ -26,7 +26,8 @@ export default function Model(props) {
 	const { nodes, materials } = useLoader(GLTFLoader, '/SolidTabe.gltf');
 	const [cover, setCover] = useState(true);
 	const legs = snap.modelFactors.legs;
-	const legMaterial = new MeshBasicMaterial({ color: 'black' });
+	const legMaterial = new MeshStandardMaterial({ color: 'black' });
+	const cupMaterial = new MeshStandardMaterial({ color: 'grey' });
 	const topper = snap.modelFactors.topper;
 
 	useEffect(() => {
@@ -57,19 +58,20 @@ export default function Model(props) {
 								snap.transforms.border
 							)
 						}
-						scale-x={snap.functions.getScale(
-							snap.functions.getScale(
-								1050 * scale.x,
-								1450 * scale.x - 400 * snap.transforms.border
-							) * 1450,
-							snap.functions.getScale(
-								1050 * scale.x,
-								1450 * scale.x - 400 * snap.transforms.border
-							) *
-								1050 *
-								snap.transforms.border *
-								scale.x
-						)}
+						scale-x={scale.x}
+						// scale-x={snap.functions.getScale(
+						// 	snap.functions.getScale(
+						// 		1050 * scale.x,
+						// 		1450 * scale.x - 400 * snap.transforms.border
+						// 	) * 1450,
+						// 	snap.functions.getScale(
+						// 		1050 * scale.x,
+						// 		1450 * scale.x - 400 * snap.transforms.border
+						// 	) *
+						// 		1050 *
+						// 		snap.transforms.border *
+						// 		scale.x
+						// )}
 						scale-z={snap.transforms.border}
 						material={materials.Panel_Beige}
 						geometry={nodes.TopSetF2.geometry}
@@ -335,11 +337,15 @@ export default function Model(props) {
 					geometry={nodes.BLLegBlock.geometry}
 				/>
 				<mesh
-					material={materials.Panel_Beige}
+					position-y={topper == 'cover' ? -9 : 0}
+					visible={snap.modelFactors.cups}
+					material={cupMaterial}
 					geometry={nodes.CupBL.geometry}
 				/>
 				<mesh
-					material={materials.Panel_Beige}
+					position-y={topper == 'cover' ? -9 : 0}
+					visible={snap.modelFactors.cups}
+					material={cupMaterial}
 					geometry={nodes.CupLB.geometry}
 				/>
 
@@ -408,11 +414,15 @@ export default function Model(props) {
 					geometry={nodes.BRLegBlock.geometry}
 				/>
 				<mesh
-					material={materials.Panel_Beige}
+					position-y={topper == 'cover' ? -9 : 0}
+					visible={snap.modelFactors.cups}
+					material={cupMaterial}
 					geometry={nodes.CupBR.geometry}
 				/>
 				<mesh
-					material={materials.Panel_Beige}
+					position-y={topper == 'cover' ? -9 : 0}
+					visible={snap.modelFactors.cups}
+					material={cupMaterial}
 					geometry={nodes.CupRB.geometry}
 				/>
 				<mesh
@@ -478,11 +488,15 @@ export default function Model(props) {
 					geometry={nodes.FLLegBlock.geometry}
 				/>
 				<mesh
-					material={materials.Panel_Beige}
+					position-y={topper == 'cover' ? -9 : 0}
+					visible={snap.modelFactors.cups}
+					material={cupMaterial}
 					geometry={nodes.CupLF.geometry}
 				/>
 				<mesh
-					material={materials.Panel_Beige}
+					position-y={topper == 'cover' ? -9 : 0}
+					visible={snap.modelFactors.cups}
+					material={cupMaterial}
 					geometry={nodes.CupFL.geometry}
 				/>
 				<mesh
@@ -551,11 +565,15 @@ export default function Model(props) {
 					geometry={nodes.FRLegBlock.geometry}
 				/>
 				<mesh
-					material={materials.Panel_Beige}
+					position-y={topper == 'cover' ? -9 : 0}
+					visible={snap.modelFactors.cups}
+					material={cupMaterial}
 					geometry={nodes.CupFR.geometry}
 				/>
 				<mesh
-					material={materials.Panel_Beige}
+					position-y={topper == 'cover' ? -9 : 0}
+					visible={snap.modelFactors.cups}
+					material={cupMaterial}
 					geometry={nodes.CupRF.geometry}
 				/>
 				<mesh
