@@ -6,7 +6,7 @@ import { useSnapshot } from 'valtio';
 
 export default (props) => {
 	const [selected, setSelected] = React.useState(0);
-	const [selected2, setSelected2] = React.useState(0);
+	const [selected2, setSelected2] = React.useState(1);
 	const [cups, setCups] = React.useState(false);
 	const snap = useSnapshot(store);
 	return (

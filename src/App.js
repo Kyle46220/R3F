@@ -129,6 +129,7 @@ class App extends React.Component {
 						<Centered className="App">
 							<Suspense fallback={null}>
 								<TabeViewer />
+								{/* <ModelViewer /> */}
 							</Suspense>
 						</Centered>
 					</Provider>

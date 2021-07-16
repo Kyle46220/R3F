@@ -21,17 +21,27 @@ const store = proxy({
 			const result = offset - offset * scale;
 			return result;
 		},
-		getScaleWithOffset: (total, offset, scale) => {
-			const oldDim = total - 2 * offset;
+		// getScaleWithOffset: (total, offset, scale) => {
+		// 	const oldDim = total - 2 * offset;
 
-			const newDim = total - 2 * scale * offset;
+		// 	const newDim = total - 2 * scale * offset;
 
-			const result = store.functions.getScale(oldDim, newDim);
+		// 	const result = store.functions.getScale(oldDim, newDim);
 
+		// 	return result;
+		// },
+		getScaleWithOffset: (total, offset, scale, scale2) => {
+			const result =
+				(total * scale2 - offset * 2 * scale) / (total - offset * 2);
+
+			console.log(result);
 			return result;
 		},
 	},
 	modelFactors: {
+		legs: 'Timber',
+		matColour: '#1b1a6a',
+		timberColour: '#441e06',
 		cups: true,
 		topper: 'inset',
 		table: 0,
@@ -76,7 +86,7 @@ const store = proxy({
 	transforms: {
 		legs: 'Timber',
 		colour: '#ffffff',
-		border: 1,
+		borderScale: 1,
 		scale: { x: 1, y: 1, z: 1 },
 		shelfQTY: 3,
 		shelfHeights: { 0: 195, 1: 295, 2: 395, 3: 495, 4: 595 },

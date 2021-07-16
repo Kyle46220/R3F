@@ -4,6 +4,28 @@ import { subscribe, useSnapshot, proxy } from 'valtio';
 import store from './store';
 import { MathUtils } from 'three';
 import ButtonGroup from './ButtonGroup';
+import { HexColorPicker } from 'react-colorful';
+
+const ColourPicker = (item) => {
+	const snap = useSnapshot(store);
+	console.log(snap.modelFactors.timberColour);
+	return (
+		<>
+			<h4>Mat Colour</h4>
+			<HexColorPicker
+				style={{ height: '100px' }}
+				color={snap.modelFactors.matColour}
+				onChange={(e) => (store.modelFactors.matColour = e)}
+			/>
+			<h4>Timber Colour</h4>
+			<HexColorPicker
+				style={{ height: '100px' }}
+				color={snap.modelFactors.timberColour}
+				onChange={(e) => (store.modelFactors.timberColour = e)}
+			/>
+		</>
+	);
+};
 
 export default () => {
 	const snap = useSnapshot(store);
@@ -17,16 +39,19 @@ export default () => {
 	const border = useControl('Border Width', {
 		type: 'number',
 		value: 1,
-		state: [snap.transforms.border, (e) => (store.transforms.border = e)],
-		min: 0,
-		max: 6,
+		state: [
+			snap.transforms.borderScale,
+			(e) => (store.transforms.borderScale = e),
+		],
+		min: 0.66,
+		max: 1.5,
 	});
 	const widthScale = useControl('Width Scale', {
 		type: 'number',
 		value: 1,
 		state: [snap.transforms.scale.x, (e) => (store.transforms.scale.x = e)],
-		min: 1,
-		max: 6,
+		min: 0.66,
+		max: 1.35,
 	});
 	// const heightScale = useControl('Height Scale', {
 	// 	type: 'number',
@@ -39,10 +64,16 @@ export default () => {
 		type: 'number',
 		value: 1,
 		state: [snap.transforms.scale.z, (e) => (store.transforms.scale.z = e)],
+		min: 0.8,
+		max: 1.26,
 	});
 	const legType = useControl('Legs', {
 		type: 'custom',
 		component: ButtonGroup,
+	});
+	const colour = useControl('Colour', {
+		type: 'custom',
+		component: ColourPicker,
 	});
 
 	// Return view, these are regular three.js elements expressed in JSX

@@ -389,3 +389,7 @@ I adjusted the model in fusion to have no components and be all solids. This is 
 
 How to group the parts of the model?
 Still need to have sections where transfroms of greoup are relevant eg front, side legs. Things like on/of colour can be done with state.
+
+with my scaling functions. if i passed each of them an object, instead of 4 separate args. I could destructure them inside the function. Then I could generate objects for each mesh from the nodes. or I could even just put the nodes in. This would make it way more universal.
+
+Transient updates might be the solution to component will mount for legs etc.
