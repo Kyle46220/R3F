@@ -34,11 +34,11 @@ const store = proxy({
 			const result =
 				(total * scale2 - offset * 2 * scale) / (total - offset * 2);
 
-			console.log(result);
 			return result;
 		},
 	},
 	modelFactors: {
+		steelColour: 'blue',
 		legs: 'Timber',
 		matColour: '#1b1a6a',
 		timberColour: '#441e06',

@@ -1,10 +1,14 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Controls, useControl, withControls } from 'react-three-gui';
 import { subscribe, useSnapshot, proxy } from 'valtio';
 import store from './store';
 import { MathUtils } from 'three';
 import ButtonGroup from './ButtonGroup';
 import { HexColorPicker } from 'react-colorful';
+import { TextureLoader } from 'three/src/loaders/TextureLoader';
+import { useLoader } from 'react-three-fiber';
+import { useTexture } from '@react-three/drei';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 const ColourPicker = (item) => {
 	const snap = useSnapshot(store);
@@ -28,7 +32,22 @@ const ColourPicker = (item) => {
 };
 
 export default () => {
+	const box = useRef();
+	const { nodes } = useLoader(GLTFLoader, '/blenderSmallTabe.gltf');
+
+	useEffect(() => {
+		console.log(box.current);
+		console.log(nodes.BaseBoard);
+	});
+
+	const [colourMap, displacementMap, normalMap, roughnessMap] = useTexture([
+		'./Wood051_1K_Color.jpg',
+		'./Wood051_1K_Displacement.jpg',
+		'./Wood051_1K_Normal.jpg',
+		'./Wood051_1K_Roughness.jpg',
+	]);
 	const snap = useSnapshot(store);
+	const { scale } = snap.transforms;
 	// This reference will give us direct access to the mesh
 	const mesh = useRef();
 	// Set up state for the hovered and active state
@@ -43,7 +62,7 @@ export default () => {
 			snap.transforms.borderScale,
 			(e) => (store.transforms.borderScale = e),
 		],
-		min: 0.66,
+		min: 0,
 		max: 1.5,
 	});
 	const widthScale = useControl('Width Scale', {
@@ -81,14 +100,16 @@ export default () => {
 		<mesh
 			ref={mesh}
 			// rotation-x={MathUtils.degToRad(-90)}
-			scale={[widthScale, snap.transforms.scale.y, depthScale]}
+			scale={[scale.x, scale.y, scale.z]}
 			position-y={392}
 			onClick={(event) => setActive(!active)}
 			onPointerOver={(event) => setHover(true)}
 			onPointerOut={(event) => setHover(false)}
-			visible={false}
+			visible={true}
+			// geometry={nodes.BaseBoard.geometry}
 		>
 			<boxGeometry
+				ref={box}
 				args={[
 					snap.modelFactors.table.x,
 					snap.modelFactors.table.y,
@@ -96,8 +117,12 @@ export default () => {
 				]}
 			/>
 			<meshStandardMaterial
-				color={hovered ? 'hotpink' : 'orange'}
-				wireframe
+				displacementScale={snap.transforms.borderScale}
+				color={snap.modelFactors.matColour}
+				map={colourMap}
+				// displacementMap={displacementMap}
+				// normalMap={normalMap}
+				// roughnessMap={roughnessMap}
 			/>
 		</mesh>
 	);
