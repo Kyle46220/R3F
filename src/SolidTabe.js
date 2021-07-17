@@ -24,20 +24,7 @@ export default function Model(props) {
 	const group = useRef();
 	const baseBoardRef = useRef();
 
-	const { nodes, materials } = useLoader(GLTFLoader, '/SolidTabe6.gltf');
-	// const [
-	// 	colourMap,
-	// 	displacementMap,
-	// 	normalMap,
-	// 	roughnessMap,
-	// 	aoMap,
-	// ] = useTexture([
-	// 	'/textures/Wood_007_COLOR.jpg',
-	// 	'/textures/Wood_007_DISP.png',
-	// 	'/textures/Wood_007_NORM.jpg',
-	// 	'/textures/Wood_007_ROUGH.jpg',
-	// 	'/textures/Wood_007_OCC.jpg',
-	// ]);
+	const { nodes, materials } = useLoader(GLTFLoader, '/SolidTabe7.gltf');
 
 	const [colourMap, displacementMap, normalMap, roughnessMap] = useTexture([
 		'./Wood051_1K_Color.jpg',
@@ -57,9 +44,6 @@ export default function Model(props) {
 		() => new MeshPhongMaterial({ color: ' grey' }),
 		[snap.modelFactors.steelColour]
 	);
-	// const timberMaterial = new MeshStandardMaterial({
-	// 	color: snap.modelFactors.timberColour,
-	// });
 
 	const {
 		getPos,
@@ -406,19 +390,11 @@ export default function Model(props) {
 
 				<mesh
 					ref={baseBoardRef}
-					// scale-x={scale.x}
-					// scale-z={scale.z}
+					scale-x={scale.x}
+					scale-z={scale.z}
 					material={matMaterial}
 					geometry={nodes.BaseBoard.geometry}
-				>
-					{/* <meshStandardMaterial
-						color={matColour}
-						map={colourMap}
-						// displacementMap={displacementMap}
-						normalMap={normalMap}
-						roughnessMap={roughnessMap}
-					/> */}
-				</mesh>
+				></mesh>
 			</group>
 			<group name={'Corners'}>
 				<group

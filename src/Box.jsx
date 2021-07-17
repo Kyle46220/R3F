@@ -33,7 +33,7 @@ const ColourPicker = (item) => {
 
 export default () => {
 	const box = useRef();
-	const { nodes } = useLoader(GLTFLoader, '/SolidTabe5.gltf');
+	const { nodes } = useLoader(GLTFLoader, '/SolidTabe7.gltf');
 
 	useEffect(() => {
 		console.log(box.current);
@@ -62,7 +62,7 @@ export default () => {
 			snap.transforms.borderScale,
 			(e) => (store.transforms.borderScale = e),
 		],
-		min: 0,
+		min: 0.66,
 		max: 1.5,
 	});
 	const widthScale = useControl('Width Scale', {
