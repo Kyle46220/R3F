@@ -12,7 +12,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 const ColourPicker = (item) => {
 	const snap = useSnapshot(store);
-	console.log(snap.modelFactors.timberColour);
+	console.log(snap.modelFactors.matColour);
 	return (
 		<>
 			<h4>Mat Colour</h4>
@@ -33,7 +33,7 @@ const ColourPicker = (item) => {
 
 export default () => {
 	const box = useRef();
-	const { nodes } = useLoader(GLTFLoader, '/blenderSmallTabe.gltf');
+	const { nodes } = useLoader(GLTFLoader, '/SolidTabe5.gltf');
 
 	useEffect(() => {
 		console.log(box.current);
@@ -101,11 +101,12 @@ export default () => {
 			ref={mesh}
 			// rotation-x={MathUtils.degToRad(-90)}
 			scale={[scale.x, scale.y, scale.z]}
+			// scale={100}
 			position-y={392}
 			onClick={(event) => setActive(!active)}
 			onPointerOver={(event) => setHover(true)}
 			onPointerOut={(event) => setHover(false)}
-			visible={true}
+			visible={false}
 			// geometry={nodes.BaseBoard.geometry}
 		>
 			<boxGeometry
@@ -117,12 +118,13 @@ export default () => {
 				]}
 			/>
 			<meshStandardMaterial
-				displacementScale={snap.transforms.borderScale}
+				attach="material"
+				displacementScale={0.2}
 				color={snap.modelFactors.matColour}
 				map={colourMap}
-				// displacementMap={displacementMap}
-				// normalMap={normalMap}
-				// roughnessMap={roughnessMap}
+				displacementMap={displacementMap}
+				normalMap={normalMap}
+				roughnessMap={roughnessMap}
 			/>
 		</mesh>
 	);

@@ -12,7 +12,11 @@ import { useTexture } from '@react-three/drei';
 import { useSnapshot } from 'valtio';
 import store from './store';
 import { Controls, useControl, withControls } from 'react-three-gui';
-import { MeshBasicMaterial, MeshStandardMaterial } from 'three';
+import {
+	MeshBasicMaterial,
+	MeshStandardMaterial,
+	MeshPhongMaterial,
+} from 'three';
 
 export default function Model(props) {
 	console.log('component Mount');
@@ -20,7 +24,7 @@ export default function Model(props) {
 	const group = useRef();
 	const baseBoardRef = useRef();
 
-	const { nodes, materials } = useLoader(GLTFLoader, '/SolidTabe4.gltf');
+	const { nodes, materials } = useLoader(GLTFLoader, '/SolidTabe6.gltf');
 	// const [
 	// 	colourMap,
 	// 	displacementMap,
@@ -50,11 +54,10 @@ export default function Model(props) {
 		[snap.modelFactors.steelColour]
 	);
 	const cupMaterial = useMemo(
-		() =>
-			new MeshStandardMaterial({ color: snap.modelFactors.steelColour }),
+		() => new MeshPhongMaterial({ color: ' grey' }),
 		[snap.modelFactors.steelColour]
 	);
-	// const materials.Oak = new MeshStandardMaterial({
+	// const timberMaterial = new MeshStandardMaterial({
 	// 	color: snap.modelFactors.timberColour,
 	// });
 
@@ -80,7 +83,7 @@ export default function Model(props) {
 		matColour,
 	} = snap.modelFactors;
 
-	const matMaterial = useMemo(
+	const timberMaterial = useMemo(
 		() =>
 			new MeshStandardMaterial({
 				map: colourMap,
@@ -88,6 +91,14 @@ export default function Model(props) {
 				roughnessMap: roughnessMap,
 				normalMap: normalMap,
 
+				color: matColour,
+			}),
+		[matColour]
+	);
+
+	const matMaterial = useMemo(
+		() =>
+			new MeshStandardMaterial({
 				color: matColour,
 			}),
 		[matColour]
@@ -119,7 +130,7 @@ export default function Model(props) {
 							scale.x
 						)}
 						scale-z={borderScale}
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.TopSetF2.geometry}
 					></mesh>
 					<mesh
@@ -132,7 +143,7 @@ export default function Model(props) {
 						)}
 						scale-z={borderScale}
 						visible={topper == 'cover' ? true : false}
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.TopCovF2.geometry}
 					/>
 					<mesh
@@ -143,7 +154,7 @@ export default function Model(props) {
 							borderScale,
 							scale.x
 						)}
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.InnerF.geometry}
 					/>
 					<mesh
@@ -153,7 +164,7 @@ export default function Model(props) {
 							1,
 							scale.x
 						)}
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.RailF.geometry}
 					/>
 				</group>
@@ -173,7 +184,7 @@ export default function Model(props) {
 						)}
 						position-z={getEdge(table.z, borderScale)}
 						scale-z={borderScale}
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.TopSetB2.geometry}
 					/>
 					<mesh
@@ -186,7 +197,7 @@ export default function Model(props) {
 							borderScale,
 							scale.x
 						)}
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.TopCovB2.geometry}
 					/>
 					<mesh
@@ -197,7 +208,7 @@ export default function Model(props) {
 							scale.x
 						)}
 						position-z={-getPosOffset(borderWidth, borderScale)}
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.InnerB.geometry}
 					/>
 					<mesh
@@ -207,7 +218,7 @@ export default function Model(props) {
 							1,
 							scale.x
 						)}
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.RailB.geometry}
 					/>
 				</group>
@@ -227,7 +238,7 @@ export default function Model(props) {
 							borderScale,
 							scale.z
 						)}
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.TopSetR2.geometry}
 					/>
 					<mesh
@@ -238,7 +249,7 @@ export default function Model(props) {
 							borderScale,
 							scale.z
 						)}
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.InnerR.geometry}
 					/>
 					<mesh
@@ -251,7 +262,7 @@ export default function Model(props) {
 							borderScale,
 							scale.z
 						)}
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.TopCovR2.geometry}
 					/>
 					<mesh
@@ -261,7 +272,7 @@ export default function Model(props) {
 							1,
 							scale.z
 						)}
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.RailR.geometry}
 					/>
 				</group>
@@ -281,7 +292,7 @@ export default function Model(props) {
 							borderScale,
 							scale.z
 						)}
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.TopSetL2.geometry}
 					/>
 					<mesh
@@ -292,7 +303,7 @@ export default function Model(props) {
 							borderScale,
 							scale.z
 						)}
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.InnerL.geometry}
 					/>
 					<mesh
@@ -305,7 +316,7 @@ export default function Model(props) {
 							borderScale,
 							scale.z
 						)}
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.TopCovL2.geometry}
 					/>
 					<mesh
@@ -315,7 +326,7 @@ export default function Model(props) {
 							1,
 							scale.z
 						)}
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.RailL.geometry}
 					/>
 				</group>
@@ -324,40 +335,40 @@ export default function Model(props) {
 				<group
 					name={'coverTopper'}
 					visible={cover && topper == 'cover' ? true : false}
-					material={materials.Oak}
+					material={timberMaterial}
 					onClick={() => setCover(!cover)}
 					scale-x={scale.x}
 					scale-z={scale.z}
 				>
 					<mesh
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.CoverR.geometry}
 					/>
 					<mesh
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.CoverML.geometry}
 					/>
 					<mesh
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.CoverMR.geometry}
 					/>
 					<mesh
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.CoverL.geometry}
 					/>
 					<group name={'twoPieceCover'}>
 						<mesh
-							material={materials.Oak}
+							material={timberMaterial}
 							geometry={nodes.CoverFillL.geometry}
 						/>
 						<mesh
-							material={materials.Oak}
+							material={timberMaterial}
 							geometry={nodes.CoverFillR.geometry}
 						/>
 					</group>
 					<group name={'threePieceCover'}>
 						<mesh
-							material={materials.Oak}
+							material={timberMaterial}
 							geometry={nodes.CoverFillC.geometry}
 						/>
 					</group>
@@ -380,15 +391,15 @@ export default function Model(props) {
 				>
 					<mesh
 						visible={table.x * scale.x > 1450 ? false : true}
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.InsetTopFill.geometry}
 					/>
 					<mesh
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.InsetTopR.geometry}
 					/>
 					<mesh
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.InsetTopL.geometry}
 					/>
 				</group>
@@ -397,16 +408,16 @@ export default function Model(props) {
 					ref={baseBoardRef}
 					// scale-x={scale.x}
 					// scale-z={scale.z}
-					// geometry-uv-normalized={true}
+					material={matMaterial}
 					geometry={nodes.BaseBoard.geometry}
 				>
-					<meshStandardMaterial
+					{/* <meshStandardMaterial
 						color={matColour}
 						map={colourMap}
-						displacementMap={displacementMap}
-						// normalMap={normalMap}
+						// displacementMap={displacementMap}
+						normalMap={normalMap}
 						roughnessMap={roughnessMap}
-					/>
+					/> */}
 				</mesh>
 			</group>
 			<group name={'Corners'}>
@@ -424,27 +435,27 @@ export default function Model(props) {
 					>
 						<mesh
 							visible={topper == 'inset' ? true : false}
-							material={materials.Oak}
+							material={timberMaterial}
 							geometry={nodes.TopSetL1.geometry}
 						/>
 						<mesh
 							visible={topper == 'inset' ? true : false}
-							material={materials.Oak}
+							material={timberMaterial}
 							geometry={nodes.TopSetB3.geometry}
 						/>
 						<mesh
 							visible={topper == 'cover' ? true : false}
-							material={materials.Oak}
+							material={timberMaterial}
 							geometry={nodes.TopCovB3.geometry}
 						/>
 						<mesh
 							visible={topper == 'cover' ? true : false}
-							material={materials.Oak}
+							material={timberMaterial}
 							geometry={nodes.TopCovL1.geometry}
 						/>
 					</group>
 					<mesh
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.BLLegBlock.geometry}
 					/>
 					<mesh
@@ -466,7 +477,7 @@ export default function Model(props) {
 
 					<mesh
 						visible={legs == 'Timber' ? true : false}
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.LegBL.geometry}
 					/>
 
@@ -490,29 +501,29 @@ export default function Model(props) {
 					>
 						<mesh
 							visible={topper == 'cover' ? true : false}
-							material={materials.Oak}
+							material={timberMaterial}
 							geometry={nodes.TopCovR3.geometry}
 						/>
 						<mesh
 							visible={topper == 'inset' ? true : false}
-							material={materials.Oak}
+							material={timberMaterial}
 							geometry={nodes.TopSetR3.geometry}
 						/>
 
 						<mesh
 							visible={topper == 'inset' ? true : false}
-							material={materials.Oak}
+							material={timberMaterial}
 							geometry={nodes.TopSetB1.geometry}
 						/>
 						<mesh
 							visible={topper == 'cover' ? true : false}
-							material={materials.Oak}
+							material={timberMaterial}
 							geometry={nodes.TopCovB1.geometry}
 						/>
 					</group>
 
 					<mesh
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.BRLegBlock.geometry}
 					/>
 					<mesh
@@ -533,7 +544,7 @@ export default function Model(props) {
 					/>
 					<mesh
 						visible={legs == 'Timber' ? true : false}
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.LegBR.geometry}
 					/>
 					<mesh
@@ -557,27 +568,27 @@ export default function Model(props) {
 					>
 						<mesh
 							visible={topper == 'inset' ? true : false}
-							material={materials.Oak}
+							material={timberMaterial}
 							geometry={nodes.TopSetF1.geometry}
 						/>
 						<mesh
 							visible={topper == 'inset' ? true : false}
-							material={materials.Oak}
+							material={timberMaterial}
 							geometry={nodes.TopSetL3.geometry}
 						/>
 						<mesh
 							visible={topper == 'cover' ? true : false}
-							material={materials.Oak}
+							material={timberMaterial}
 							geometry={nodes.TopCovF1.geometry}
 						/>
 						<mesh
 							visible={topper == 'cover' ? true : false}
-							material={materials.Oak}
+							material={timberMaterial}
 							geometry={nodes.TopCovL3.geometry}
 						/>
 					</group>
 					<mesh
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.FLLegBlock.geometry}
 					/>
 					<mesh
@@ -598,7 +609,7 @@ export default function Model(props) {
 					/>
 					<mesh
 						visible={legs == 'Timber' ? true : false}
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.LegFL.geometry}
 					/>
 					<mesh
@@ -622,29 +633,29 @@ export default function Model(props) {
 					>
 						<mesh
 							visible={topper == 'cover' ? true : false}
-							material={materials.Oak}
+							material={timberMaterial}
 							geometry={nodes.TopCovR1.geometry}
 						/>
 						<mesh
 							visible={topper == 'cover' ? true : false}
-							material={materials.Oak}
+							material={timberMaterial}
 							geometry={nodes.TopCovF3.geometry}
 							material-color={snap.modelFactors.timberColour}
 						/>
 						<mesh
 							visible={topper == 'inset' ? true : false}
-							material={materials.Oak}
+							material={timberMaterial}
 							geometry={nodes.TopSetF3.geometry}
 						/>
 						<mesh
 							visible={topper == 'inset' ? true : false}
-							material={materials.Oak}
+							material={timberMaterial}
 							geometry={nodes.TopSetR1.geometry}
 						/>
 					</group>
 
 					<mesh
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.FRLegBlock.geometry}
 					/>
 					<mesh
@@ -665,7 +676,7 @@ export default function Model(props) {
 					/>
 					<mesh
 						visible={legs == 'Timber' ? true : false}
-						material={materials.Oak}
+						material={timberMaterial}
 						geometry={nodes.LegFR.geometry}
 					/>
 					<mesh

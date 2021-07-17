@@ -38,10 +38,10 @@ const store = proxy({
 		},
 	},
 	modelFactors: {
-		steelColour: 'blue',
+		steelColour: 'black',
 		legs: 'Timber',
-		matColour: '#1b1a6a',
-		timberColour: '#441e06',
+		matColour: '#00097b',
+		timberColour: '#664003',
 		cups: true,
 		topper: 'inset',
 		table: 0,
